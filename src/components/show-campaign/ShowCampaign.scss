@@ -1,0 +1,79 @@
+.show-campaign-page {
+
+    
+    display: -webkit-box;
+    display: flex;
+    -ms-flex-align: center;
+    -ms-flex-pack: center;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    background-color: #f5f5f5;
+    height: 100%;
+
+
+    .campaign-container {
+        // width: 100%;
+        // max-width: 420px;
+        padding: 2em;
+        margin: 0 auto;
+        background-color: white;
+        border: #666;
+        border-radius: 0.25rem !important;
+        box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, .05);
+
+        // .canvas-container {
+        //     border-radius: 0.25rem !important;
+        //     box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, .05);
+            
+        // }
+    }
+
+    .logo-container {
+        padding: 0 1em 2em 1em;
+        img {
+        max-width: 200px;
+        max-height: 200px;
+        background-color: red;
+        }
+    }
+    h2 {
+        color: #666;
+    }
+
+    .btns-container {
+        position: relative;
+        input {
+            margin:1em;
+        }
+        .donate {
+            position: absolute;
+            right: 0;
+        }
+    }
+    
+}
+
+/*
+https://images.unsplash.com/photo-1489582558212-475fa5010897?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=cc6e93a991d7f256e61ce38d9b1f2177&auto=format&fit=crop&w=1351&q=80
+
+
+https://images.unsplash.com/photo-1521493959102-bdd6677fdd81?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=4a027094c15a1ae14bf72f8f71d9380b&auto=format&fit=crop&w=1350&q=80
+
+https://images.unsplash.com/photo-1456086272160-b28b0645b729?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=9f58d52c1e7cc3e1b09b8656de4951db&auto=format&fit=crop&w=1489&q=80
+
+
+https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=b73302ddf5fabf9285df2da9c462efbb&auto=format&fit=crop&w=1350&q=80
+
+https://images.unsplash.com/photo-1505864681725-48344595127c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=f62c702d708430f3a5ef5e8f6c2621ed&auto=format&fit=crop&w=634&q=80
+
+https://images.unsplash.com/photo-1444664361762-afba083a4d77?ixlib=rb-0.3.5&s=838b0fa5916a2517c9416c4a1e71b423&auto=format&fit=crop&w=1351&q=80
+
+
+https://images.unsplash.com/photo-1494059980473-813e73ee784b?ixlib=rb-0.3.5&s=0dd6887766e0fdb2b09d3e89886c0428&auto=format&fit=crop&w=1349&q=80
+
+
+*/
