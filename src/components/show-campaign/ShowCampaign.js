@@ -45,8 +45,8 @@ import './ShowCampaign.scss';
 //     CONTRACT_CREATION: 9,
 // }
 
-const canvasW = 900;
-const canvasH = 520;
+const xPixels = 80;
+const yPixels = 30  ;
 const pixelW = 10;
 const pixelH = 10;
 const emptyColor = '#f5f5f5';
@@ -63,8 +63,6 @@ class ShowCampaign extends Component {
 
     generatePixels() {
         let pixelColors = [];
-        let xPixels = Math.floor(canvasW / pixelW);
-        let yPixels = Math.floor(canvasH / pixelH);
 
         for (var i = 0; i < xPixels; i++) {
             pixelColors[i] = [];
@@ -86,9 +84,7 @@ class ShowCampaign extends Component {
 
 
     drawBaseCanvas(pixelColors, selectedX = -1, selectedY = -1) {
-        let xPixels = Math.floor(canvasW / pixelW);
-        let yPixels = Math.floor(canvasH / pixelH);
-
+        
         var ctx = document.getElementById('pixels-canvas').getContext('2d');
         for (var iX = 0; iX < xPixels; iX++) {
             for (var iY = 0; iY < yPixels; iY++) {
@@ -156,6 +152,8 @@ class ShowCampaign extends Component {
     }
     render() {
 
+        let canvasW = xPixels * pixelW;
+        let canvasH = yPixels * pixelH;
         return (
             <div className="show-campaign-page">
 
@@ -177,7 +175,7 @@ class ShowCampaign extends Component {
                     </div>
                     <div className="row btns-container">
                         <input className="btn btn-outline-primary contributions" type="button" value="Contributions" />
-                        <input className="btn btn-success donate" type="button" value="Donate" />
+                        <input className="btn btn-success donate" type="button" value="Buy Pixel" />
                     </div>
                 </div>
                 {/* <div className="container col-sm-4 main-container">

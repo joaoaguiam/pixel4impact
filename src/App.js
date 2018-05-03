@@ -22,6 +22,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.js';
 // import NotificationGenerator from './layouts/notifications/NotificationGenerator';
 
 import './App.scss'
+import Footer from './components/footer/Footer';
 
 class App extends Component {
     render() {
@@ -31,7 +32,7 @@ class App extends Component {
             <div className="app">
 
                 {this.props.children}
-
+                {/* <Footer /> */}
                 {/* <Header />
         
             {this.props.children}
