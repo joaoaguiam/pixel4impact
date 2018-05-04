@@ -8,6 +8,7 @@ import './CreateCampaign.scss';
 
 import * as createCampaingActions from '../../store/create-campaign/actions';
 import * as createCampaingSelectors from '../../store/create-campaign/reducer';
+import IpfsUpload from '../generic/ipfs/ipfs-upload/IpfsUpload';
 
 class CreateCampaign extends Component {
     constructor(props) {
@@ -17,10 +18,13 @@ class CreateCampaign extends Component {
 
     handleFieldChange(e, fieldName) {
         let value = e.target.value;
-        console.log(fieldName +':'+value);
         this.props.dispatch(createCampaingActions.updateNewCampaignField(fieldName, value));
     }
 
+    handleLogoUploaded(url, hash) {
+        this.props.dispatch(createCampaingActions.updateNewCampaignField('campaignLogo', url));
+
+    }
     handleCreateCampaignClick() {
         this.props.dispatch(createCampaingActions.createCampaignOnBlockchain());
     }
@@ -28,6 +32,9 @@ class CreateCampaign extends Component {
 
     render() {
         let logoValue = (this.props.newCampaign.campaignLogo === '') ? 'Choose Logo' : this.props.newCampaign.campaignLogo;
+        if(this.props.newCampaign.status === createCampaingSelectors.CAMPAIGN_STATUS.CREATED) {
+            alert("Campaign created with address: "+this.props.newCampaign.contractDetails.address);
+        }
         return (
             <div className="container create-campaign-page">
                 <div className="card card-register mx-auto mt-5">
@@ -52,10 +59,11 @@ class CreateCampaign extends Component {
 
                             <div className="form-group">
                                 <label htmlFor="campaignLogo">Campaign Logo</label>
-                                <div className="custom-file">
+                                {/* <div className="custom-file">
                                     <input type="file" className="custom-file-input" id="campaignLogo" value={this.props.newCampaign.campaignLogo} onChange={(e) => {this.handleFieldChange(e, 'campaignLogo') }} />
                                     <label className="custom-file-label" htmlFor="campaignLogo">{logoValue}</label>
-                                </div>
+                                </div> */}
+                                <IpfsUpload placeholder="Choose Logo" value={logoValue} fileUploadedCB={this.handleLogoUploaded} />
                             </div>
                             <hr />
                             <div className="form-group">

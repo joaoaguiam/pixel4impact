@@ -17,7 +17,8 @@ class IpfsUpload extends Component {
             url: '',
             buffer: undefined,
             ipfsHash: undefined,
-            status: undefined
+            status: undefined,
+            fileName: this.props.value === '' ? this.props.placeholder : this.props.value
         }
     }
 
@@ -28,8 +29,12 @@ class IpfsUpload extends Component {
         const file = event.target.files[0]
         console.log(file);
         let reader = new window.FileReader()
+        this.setState({ fileName: file.name });
         reader.readAsArrayBuffer(file)
-        reader.onloadend = () => this.convertToBuffer(reader)
+        reader.onloadend = async () => {
+            await this.convertToBuffer(reader);
+            this.uploadFile();
+        };
     };
 
     convertToBuffer = async (reader) => {
@@ -42,8 +47,8 @@ class IpfsUpload extends Component {
         console.log("finished convertToBuffer")
     };
 
-    uploadFile(e) {
-        event.preventDefault();
+    uploadFile() {
+        // event.preventDefault();
         console.log("on uploadFile");
         let ipfs = getIpfs();
         console.log(ipfs);
@@ -70,17 +75,22 @@ class IpfsUpload extends Component {
         let uploaded = this.state.status === 'UPLOADED';
         let buttonLabel = uploading ? "Uploading..." : "Upload to IPFS";
         let status = uploaded ? " File successfully uploaded to IPFS" : '';
-        
 
+        // let placeholderValue = this.state.fileName === '' ? this.props.placeholder : this.state.fileName;
+        // value={this.props.value}
         return (
-            <div className="ipfs-upload-container">
-                <input className="form-control-file" type="file" onChange={this.captureFile} />
-                <button type="button" className="btn btn-secondary " onClick={this.uploadFile} disabled={uploadDisabled} >{buttonLabel}</button>
-                {status !== '' &&
-                    <div><small><i className='fas fa-check success-icon'></i>{status}</small></div>
-                }
-                {/* {uploading && <center><small><i className="fas fa-spinner fa-pulse"></i> Uploading to IPFS...</small></center>} */}
+            <div className="custom-file">
+                <input type="file" className="custom-file-input" id="campaignLogo" onChange={this.captureFile} />
+                <label className="custom-file-label" htmlFor="campaignLogo">{this.state.fileName}</label>
             </div>
+            // <div className="ipfs-upload-container">
+            //     <input className="form-control-file" type="file" onChange={this.captureFile} />
+            //     <button type="button" className="btn btn-secondary " onClick={this.uploadFile} disabled={uploadDisabled} >{buttonLabel}</button>
+            //     {status !== '' &&
+            //         <div><small><i className='fas fa-check success-icon'></i>{status}</small></div>
+            //     }
+            //     {/* {uploading && <center><small><i className="fas fa-spinner fa-pulse"></i> Uploading to IPFS...</small></center>} */}
+            // </div>
         )
     }
 }

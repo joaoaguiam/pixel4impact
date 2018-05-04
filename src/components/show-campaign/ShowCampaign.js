@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import autoBind from 'react-autobind';
 
 import './ShowCampaign.scss';
+import { getPixel4ImpactDetails } from '../../ethereum/contracts/Pixel4Impact';
 
 // import { Line } from 'react-progressbar.js';
 
@@ -45,8 +46,8 @@ import './ShowCampaign.scss';
 //     CONTRACT_CREATION: 9,
 // }
 
-const xPixels = 80;
-const yPixels = 30  ;
+// const xPixels = 80;
+// const yPixels = 30;
 const pixelW = 10;
 const pixelH = 10;
 const emptyColor = '#f5f5f5';
@@ -55,13 +56,25 @@ class ShowCampaign extends Component {
     constructor(props) {
         super(props);
         autoBind(this);
-        this.pixelColors = this.generatePixels();
+        
         this.lastPixelX = -1;
         this.lastPixelY = -1;
-
+        this.state = {
+            campaign: {
+                xPixels: 1,
+                yPixels: 1,
+                minDonation: 0.001,
+                metadataUri: '',
+                ngoName: '',
+                campaignName: '',
+                campaignWebsite: '',
+                campaignLogo: '',
+                pixelColors: this.generatePixels(1,1),
+            }
+        }
     }
 
-    generatePixels() {
+    generatePixels(xPixels, yPixels) {
         let pixelColors = [];
 
         for (var i = 0; i < xPixels; i++) {
@@ -86,15 +99,15 @@ class ShowCampaign extends Component {
     drawBaseCanvas(pixelColors, selectedX = -1, selectedY = -1) {
         
         var ctx = document.getElementById('pixels-canvas').getContext('2d');
-        for (var iX = 0; iX < xPixels; iX++) {
-            for (var iY = 0; iY < yPixels; iY++) {
+        for (var iX = 0; iX < this.state.campaign.xPixels; iX++) {
+            for (var iY = 0; iY < this.state.campaign.yPixels; iY++) {
                 ctx.fillStyle = pixelColors[iX][iY];
                 ctx.fillRect(iX * pixelW, iY * pixelH, pixelW, pixelH);
             }
         }
 
         if (selectedX !== -1 && selectedY !== -1) {
-            if (pixelColors[selectedX][selectedY] === emptyColor) {
+            if (this.state.campaign.pixelColors[selectedX][selectedY] === emptyColor) {
                 ctx.fillStyle = '#FF0000';
                 ctx.fillRect(selectedX * pixelW, selectedY * pixelH, pixelW, pixelH);
             }
@@ -102,7 +115,7 @@ class ShowCampaign extends Component {
     }
 
     renderCanvas() {
-        this.drawBaseCanvas(this.pixelColors);
+        this.drawBaseCanvas(this.state.campaign.pixelColors);
         let canvas = document.getElementById('pixels-canvas');
 
         let getMousePos = (canvas, evt) => {
@@ -143,7 +156,13 @@ class ShowCampaign extends Component {
 
 
     }
-    componentDidMount() {
+    componentDidMount = async () => {
+        let pixel4ImpactAddress = this.props.routeParams.address;
+        console.log(pixel4ImpactAddress);
+        let details = await getPixel4ImpactDetails(pixel4ImpactAddress);
+        details.pixelColors = this.generatePixels(details.xPixels, details.yPixels);
+        console.log(details);
+        this.setState({campaign: details});
         this.renderCanvas();
     }
 
@@ -151,9 +170,9 @@ class ShowCampaign extends Component {
         console.log(e);
     }
     render() {
-
-        let canvasW = xPixels * pixelW;
-        let canvasH = yPixels * pixelH;
+        console.log(this.props);
+        let canvasW = this.state.campaign.xPixels * pixelW;
+        let canvasH = this.state.campaign.yPixels * pixelH;
         return (
             <div className="show-campaign-page">
 
@@ -161,13 +180,14 @@ class ShowCampaign extends Component {
 
                     <div className="row">
                         <div className="logo-container ">
-                            <img src="https://alchetron.com/cdn/gastagus-21950eda-85e7-432e-9fd1-7b3527f8c73-resize-750.png" />
+                            <img src={this.state.campaign.campaignLogo} alt={this.state.campaign.campaignName} /> 
+                            {/* https://alchetron.com/cdn/gastagus-21950eda-85e7-432e-9fd1-7b3527f8c73-resize-750.png" */}
                         </div>
                         <div className="">
 
-                            <h1>GAS Tagus</h1>
+                            <h1>{this.state.campaign.ngoName}</h1>
 
-                            <h2>Caminhada 2018 - Angariação de Fundos</h2>
+                            <h2>{this.state.campaign.campaignName}</h2>
                         </div>
                     </div>
                     <div className="canvas-container">
@@ -175,7 +195,7 @@ class ShowCampaign extends Component {
                     </div>
                     <div className="row btns-container">
                         <input className="btn btn-outline-primary contributions" type="button" value="Contributions" />
-                        <input className="btn btn-success donate" type="button" value="Buy Pixel" />
+                        <input className="btn btn-success donate" type="button" value="Buy a Pixel4Impact" />
                     </div>
                 </div>
                 {/* <div className="container col-sm-4 main-container">

@@ -47,14 +47,14 @@ export default function reduce(state = initialState, action = {}) {
         //     return state.merge({
         //         currentStep: action.prevStep
         //     });
-        // case types.STATUS_UPDATED:
-        //     return state.merge({
-        //         status: action.newStatus
-        //     });
-        // case types.CONTRACT_DETAILS_UPDATED:
-        //     return state.merge({
-        //         contractDetails: action.contractDetails
-        //     });
+        case types.STATUS_UPDATED:
+            return state.merge({
+                status: action.newStatus
+            });
+        case types.CONTRACT_DETAILS_UPDATED:
+            return state.merge({
+                contractDetails: action.contractDetails
+            });
         default:
             return state;
     }

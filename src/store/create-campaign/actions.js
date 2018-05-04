@@ -3,6 +3,7 @@ import _ from 'lodash';
 import * as types from './actionTypes';
 import * as createCampaingSelectors from './reducer';
 import { uploadObjectIpfs } from '../../helpers/ipfs/ipfs';
+import { createPixel4Impact } from '../../ethereum/contracts/Pixel4ImpactFactory';
 // import { createEvent } from '../../ethereum/contracts/TaigaEventFactory';
 
 // import * as createTicketActions from '../create-ticket/actions';
@@ -49,11 +50,12 @@ export function createCampaignOnBlockchain() {
             dispatch(updateStatus(createCampaingSelectors.CAMPAIGN_STATUS.CONFIRMED));
             let campaign = _.clone(createCampaingSelectors.getNewCampaign(getState()));
 
-            uploadObjectIpfs(event)
+            uploadObjectIpfs(campaign)
                 .then(async (result) => {
                     let url = result.url;
                     campaign.metadataUri = url;
                     dispatch(updateNewCampaignField('metadataUri', url));
+                    createPixel4Impact(campaign, dispatch);
                     //createCampaign(campaign, dispatch);
                     // let contractDetails = await createEvent(event, dispatch);
                     // dispatch(updateNewEventField('contractDetails', contractDetails));
@@ -80,15 +82,15 @@ export function updateStatus(newStatus) {
     };
 }
 
-// export function updateContractDetails(contractDetails) {
-//     return async (dispatch, getState) => {
-//         try {
-//             dispatch({ type: types.CONTRACT_DETAILS_UPDATED, contractDetails});
-//         } catch (error) {
-//             console.error(error);
-//         }
-//     };
-// }
+export function updateContractDetails(contractDetails) {
+    return async (dispatch, getState) => {
+        try {
+            dispatch({ type: types.CONTRACT_DETAILS_UPDATED, contractDetails});
+        } catch (error) {
+            console.error(error);
+        }
+    };
+}
 
 // export function updateContraeventCreationCompletedctDetails() {
 //     return async (dispatch, getState) => {

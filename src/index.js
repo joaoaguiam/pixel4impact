@@ -60,7 +60,7 @@ ReactDOM.render((
         <Router history={history}>
             <Route path="/" component={App}>
                 <IndexRoute component={ShowCampaign} />
-                <Route path="show-campaign" component={ShowCampaign} />
+                <Route path="show-campaign/:address" component={ShowCampaign} />
                 <Route path="create-campaign" component={CreateCampaign} />
             </Route>
         </Router>

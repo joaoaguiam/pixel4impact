@@ -58,174 +58,27 @@ contract("Pixel4Impact", async function (accounts) {
             assert.equal(metadataUri, _metadataUri, "metadataUri is not correct");
         });
 
+        it("should create a new contract and verify if we can get the pixels", async function () {
+            let owner = accounts[0];
+            let user2 = accounts[1];
+
+            let xPixels = 5;
+            let yPixels = 6;
+            let minDonation = parseInt(web3.toWei(0.001, 'ether'));
+            let metadataUri = "test.test";
+
+            const contract = await Pixel4Impact.new(xPixels, yPixels, minDonation, metadataUri, { from: owner });
+
+            for (let x = 0; x < xPixels; x++) {
+                for (let y = 0; y < yPixels; y++) {
+                    let ownerBalance = parseInt(web3.eth.getBalance(owner).toNumber());
+                    let expectedBalance = ownerBalance+minDonation;
+                    let res = await contract.getPixel(x, y, "red",{from: user2, value: minDonation});
+                    let newOwnerBalance = web3.eth.getBalance(owner).toNumber();
+                    
+                    assert.equal(expectedBalance, newOwnerBalance);
+                }
+            }
+        });
     });
-
-    // describe('TaigaEvent - New Tickets Type', () => {
-    //     /*beforeEach(async function() {
-    //       contract = await
-    //     })*/
-    //     it("should create a new ticket type and verify the tokens are created", async function () {
-    //         let eventOwner = accounts[0];
-    //         let eventName = "Taiga Event 1";
-    //         let eventSymbol = "TE1";
-    //         let eventMetadataUri = "http://my.store";
-
-    //         let ticketTitle = "Ticket 1";
-    //         let ticketPrice = 1050; //10.5 USD
-    //         let ticketMetadataUri = "http://my.ticket1";
-    //         let ticketSupply = 10;
-    //         let ticketAcceptingOtherPaymentMethods = false;
-    //         let ticketTransferFrom = 123456789;
-    //         let ticketTransferUntil = 123456789;
-
-    //         const contract = await TaigaEvent.new(eventName, eventSymbol, eventMetadataUri, { from: eventOwner });
-
-
-    //         let tx = await contract.createTicketType(ticketTitle, ticketPrice, ticketMetadataUri, ticketSupply, ticketAcceptingOtherPaymentMethods, ticketTransferFrom, ticketTransferUntil, { from: eventOwner });
-
-    //         let event = getEvent(tx.logs, "TicketTypeCreated");
-
-
-    //         let logEventName = event.event;
-    //         let ticketTitleLog = event.args.title;
-    //         let ticketTypeIdLog = event.args.ticketTypeId;
-    //         let supplyLog = event.args.supply;
-
-    //         //   let fromTokenId = event.args.fromTokenId.toString();
-    //         //   let toTokenId = event.args.fromTokenId.toString();
-
-    //         assert.equal(logEventName, "TicketTypeCreated", "Logged Event should be TicketTypeCreated");
-    //         assert.equal(ticketTypeIdLog, 0, "Ticket Type Id should be 0");
-    //         assert.equal(ticketTitleLog, ticketTitle, "Ticket Title is not correct");
-    //         assert.equal(supplyLog, ticketSupply, "Ticket Supply is not correct");
-
-    //         let ticketType = await contract.getTicketTypeDetailsByTicketTypeId.call(ticketTypeIdLog, { from: eventOwner });
-
-    //         let titleStored = ticketType[0];
-    //         let priceStored = ticketType[1].toString();
-    //         let supplyStored = ticketType[2].toString();
-    //         let metadataUriStored = ticketType[3];
-    //         let acceptingOtherPaymentMethodsStored = ticketType[4];
-    //         let transferFromStored = ticketType[5];
-    //         let transferUntilStored = ticketType[6];
-
-    //         assert.equal(titleStored, ticketTitle, "Title not correct");
-    //         assert.equal(priceStored, ticketPrice, "Price not correct");
-    //         assert.equal(metadataUriStored, ticketMetadataUri, "Metadata Uri not correct");
-    //         assert.equal(supplyStored, ticketSupply, "Ticket not correct");
-    //         assert.equal(acceptingOtherPaymentMethodsStored, ticketAcceptingOtherPaymentMethods, "Accepting Other Payments not correct");
-    //         assert.equal(transferFromStored, ticketTransferFrom, "Transferred From not correct");
-    //         assert.equal(transferUntilStored, ticketTransferUntil, "Transfered Until not correct");
-
-    //         let countTransferEvents = countEvents(tx.logs, "Transfer");
-    //         assert.equal(countTransferEvents, ticketSupply, "Did not receive the correct amount of Transfer events");
-    //         //let tokensOwned = await contract.tokensOf.call(owner);
-    //         let balance = await contract.balanceOf.call(eventOwner);
-    //         assert.equal(ticketSupply, balance, "Owner does not own the correct amount of tokens");
-
-    //         for (i = 0; i < balance; i++) {
-    //             let tokenId = await contract.tokenOfOwnerByIndex.call(eventOwner, i);
-    //             let asset = await contract.getTicketTypeDetailsByTokenId.call(tokenId, { from: eventOwner });
-    //             let titleStoredToken = asset[0];
-    //             assert.equal(titleStoredToken, ticketTitle, "Title not correct");
-    //         }
-    //     });
-
-
-        // it("should create a new asset type and transfer to another account", async function() {
-        //   let storeName = "MyStore";
-        //   let storeImageUri = "http://my.store";
-
-        //   let title = "MyAssetType";
-        //   let description = "Asset Description";
-        //   let imageUri = "http://my.store/asset.png";
-        //   let category = "gamming";
-        //   let supply = 10;
-        //   let properties = JSON.stringify({prop1 : 123, prop2 : "121"});
-
-
-        //   const contract = await AssetStore.new(storeName, storeImageUri, {from: owner});
-
-        //   await contract.createAsset(title, description, imageUri, category, supply, properties, {from: owner});
-
-        //   await contract.transfer(firstPlayer, 0, {from:owner});
-
-        //   let balance = await contract.balanceOf.call(owner);
-        //   assert.equal(supply-1, balance, "Owner does not own the correct amount of tokens");
-
-        //   let firstPlayerBalance = await contract.balanceOf.call(firstPlayer);
-        //   assert.equal(1, firstPlayerBalance, "First Player does not own the correct amount of tokens");
-
-        // });
-
-        // it("should get the tokens owned by index", async function() {
-        //   let storeName = "MyStore";
-        //   let storeImageUri = "http://my.store";
-
-        //   let title = "MyAssetType";
-        //   let description = "Asset Description";
-        //   let imageUri = "http://my.store/asset.png";
-        //   let category = "gamming";
-        //   let supply = 10;
-        //   let properties = JSON.stringify({prop1 : 123, prop2 : "121"});
-
-
-        //   let title1 = "MyAssetType1";
-        //   let title2 = "MyAssetType2";
-
-
-        //   const contract = await AssetStore.new(storeName, storeImageUri, {from: owner});
-
-        //   await contract.createAsset(title, description, imageUri, assetType, supply, properties, {from: owner});
-        //   await contract.createAsset(title1, description, imageUri, assetType, supply, properties, {from: owner});
-        //   await contract.createAsset(title2, description, imageUri, assetType, supply, properties, {from: owner});
-
-        //   let tokenId1 = 0;
-        //   let tokenId2 = 10;
-        //   let tokenId3 = 23;
-
-        //   await contract.transfer(firstPlayer, tokenId1, {from:owner});
-        //   await contract.transfer(firstPlayer, tokenId2, {from:owner});
-        //   await contract.transfer(firstPlayer, tokenId3, {from:owner});
-
-        //   let balance = await contract.balanceOf.call(firstPlayer);
-        //   assert.equal(balance.toNumber(), 3, "Balance is not correct");
-
-        //   let asset0 = await contract.getAssetTypeFromIndex.call(firstPlayer, 0);
-        //   let asset1 = await contract.getAssetTypeFromIndex.call(firstPlayer, 1);
-        //   let asset2 = await contract.getAssetTypeFromIndex.call(firstPlayer, 2);
-
-        //   assert.equal(asset0[0].toNumber(), tokenId1, "TokenId first asset not correct");
-        //   assert.equal(asset1[0].toNumber(), tokenId2, "TokenId second asset not correct");
-        //   assert.equal(asset2[0].toNumber(), tokenId3, "TokenId third asset not correct");
-
-
-        //   assert.equal(asset0[1], title, "Title first asset not correct");
-        //   assert.equal(asset1[1], title1, "Title second asset not correct");
-        //   assert.equal(asset2[1], title2, "Title third asset not correct");
-
-        // });
-
-        // it("should fail when creating the asset when not the owner", async function () {
-        //     let storeName = "MyStore";
-        //     let storeImageUri = "http://my.store";
-
-        //     let title = "MyAssetType";
-        //     let description = "Asset Description";
-        //     let imageUri = "http://my.store/asset.png";
-        //     let category = "gamming";
-        //     let supply = 10;
-        //     let properties = JSON.stringify({ prop1: 123, prop2: "121" });
-
-        //     const contract = await AssetStore.new(storeName, storeImageUri, { from: owner });
-        //     try {
-        //         await contract.createAsset(title, description, imageUri, category, supply, properties, { from: firstPlayer });
-        //         assert(false);
-        //     }
-        //     catch (err) {
-        //         assert(isEVMException(err), err.toString());
-        //     }
-        // });
-
-    // });
 });

@@ -26,6 +26,7 @@ contract Pixel4Impact is ERC721Token, Ownable {
     mapping(uint256 => Pixel) public tokenToPixel;
     mapping(uint16 => mapping(uint16 => bool)) pixelsTaken;
     
+    event PixelCreated(uint16 x, uint16 y, string color, uint donation, address contributor);
 
     modifier tokenAvailable(uint16 x, uint16 y) {
         require(!pixelsTaken[x][y]);
@@ -40,7 +41,7 @@ contract Pixel4Impact is ERC721Token, Ownable {
     }
 
 
-    function getPixel(uint16 _x, uint16 _y, string _color) public tokenAvailable(_x, _y) isMinDonation {
+    function donatePixel(uint16 _x, uint16 _y, string _color) public payable tokenAvailable(_x, _y) isMinDonation() {
         uint256 newTokenId = _getNextTokenId();
         _mint(msg.sender, newTokenId);
         Pixel memory pixel = Pixel({
@@ -51,13 +52,20 @@ contract Pixel4Impact is ERC721Token, Ownable {
         tokenToPixel[newTokenId] = pixel;
         pixelsTaken[_x][_y] = true;
 
+        owner.transfer(msg.value);
     }
-    
+
     function _getNextTokenId() private view returns (uint256) {
         return totalSupply().add(1); 
     }
 
     function getDetails() public view returns(uint16 _xPixels, uint16 _yPixels, uint _minDonation, string _metadataUri) {
         return (xPixels, yPixels, minDonation, metadataUri);
+    }
+
+    
+
+    function () external payable {
+        //TODO;
     }
 }
