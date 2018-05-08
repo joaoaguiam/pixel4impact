@@ -31,6 +31,7 @@ import App from './App'
 import * as reducers from './store/reducers';
 import ShowCampaign from './components/show-campaign/ShowCampaign';
 import CreateCampaign from './components/create-campaign/CreateCampaign';
+import Home from './components/home/Home';
 // import CreateEventContainer from './components/create-event/CreateEventContainer';
 // import MyEventsContainer from './components/my-events/MyEventsContainer';
 // import CreateTicketContainer from './components/create-ticket/CreateTicketContainer';
@@ -59,7 +60,7 @@ ReactDOM.render((
     <Provider store={store}>
         <Router history={history}>
             <Route path="/" component={App}>
-                <IndexRoute component={ShowCampaign} />
+                <IndexRoute component={Home} />
                 <Route path="show-campaign/:address" component={ShowCampaign} />
                 <Route path="create-campaign" component={CreateCampaign} />
             </Route>

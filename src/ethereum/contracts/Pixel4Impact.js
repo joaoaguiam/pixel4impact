@@ -45,5 +45,5 @@ export async function getPixel4ImpactDetails(address) {
             console.log(e);
             reject(e);
         }
-});
+    });
 }

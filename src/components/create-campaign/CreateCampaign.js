@@ -9,6 +9,7 @@ import './CreateCampaign.scss';
 import * as createCampaingActions from '../../store/create-campaign/actions';
 import * as createCampaingSelectors from '../../store/create-campaign/reducer';
 import IpfsUpload from '../generic/ipfs/ipfs-upload/IpfsUpload';
+import Header from '../header/Header';
 
 class CreateCampaign extends Component {
     constructor(props) {
@@ -32,79 +33,106 @@ class CreateCampaign extends Component {
 
     render() {
         let logoValue = (this.props.newCampaign.campaignLogo === '') ? 'Choose Logo' : this.props.newCampaign.campaignLogo;
-        if(this.props.newCampaign.status === createCampaingSelectors.CAMPAIGN_STATUS.CREATED) {
-            alert("Campaign created with address: "+this.props.newCampaign.contractDetails.address);
+        console.log(this.props);
+        if (this.props.status === createCampaingSelectors.CAMPAIGN_STATUS.CREATED) {
+            alert("Campaign created with address: " + this.props.newCampaign.contractDetails.address);
         }
-        return (
-            <div className="container create-campaign-page">
-                <div className="card card-register mx-auto mt-5">
-                    {/* <div className="card-header">Create Pixel 4 Impact campaign</div> */}
-                    <div className="card-body">
-                        <h1>Create Pixel 4 Impact Campaign</h1>
-                        <hr />
-                        <form>
-                            <div className="form-group">
-                                <label htmlFor="ngoName">Organization Name</label>
-                                <input className="form-control" id="ngoName" type="text" aria-describedby="nameHelp" placeholder="Enter your organization name" value={this.props.newCampaign.ngoName} onChange={(e) => {this.handleFieldChange(e, 'ngoName') }}/>
-                            </div>
-                            <hr />
-                            <div className="form-group">
-                                <label htmlFor="campaignName">Campaign Name</label>
-                                <input className="form-control" id="campaignName" type="text" aria-describedby="campaignHelp" placeholder="Enter your campaign name"  value={this.props.newCampaign.campaignName} onChange={(e) => {this.handleFieldChange(e, 'campaignName') }}/>
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="campaignWebsite">Campaign Website</label>
-                                <input className="form-control" id="campaignWebsite" type="text" aria-describedby="campaignWebsiteHelp" placeholder="Enter your campaign website"   value={this.props.newCampaign.campaignWebsite} onChange={(e) => {this.handleFieldChange(e, 'campaignWebsite') }}/>
-                            </div>
+        // let showStatusDialog = (this.props.status === createCampaingSelectors.CAMPAIGN_STATUS.CREATED
 
-                            <div className="form-group">
-                                <label htmlFor="campaignLogo">Campaign Logo</label>
-                                {/* <div className="custom-file">
+        return (
+            <div>
+                <Header />
+                <div className="container create-campaign-page">
+                    <div className="card card-register mx-auto col-sm-8">
+                        {/* <div className="card-header">Create Pixel 4 Impact campaign</div> */}
+                        <div className="card-body">
+                            {/* <h1>Create Pixel 4 Impact Campaign</h1>
+                        <hr /> */}
+                            <form>
+                                <div className="form-group">
+                                    <label htmlFor="ngoName">Organization Name</label>
+                                    <input className="form-control" id="ngoName" type="text" aria-describedby="nameHelp" placeholder="Enter your organization name" value={this.props.newCampaign.ngoName} onChange={(e) => { this.handleFieldChange(e, 'ngoName') }} />
+                                </div>
+                                <hr />
+                                <div className="form-group">
+                                    <label htmlFor="campaignName">Campaign Name</label>
+                                    <input className="form-control" id="campaignName" type="text" aria-describedby="campaignHelp" placeholder="Enter your campaign name" value={this.props.newCampaign.campaignName} onChange={(e) => { this.handleFieldChange(e, 'campaignName') }} />
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="campaignWebsite">Campaign Website</label>
+                                    <input className="form-control" id="campaignWebsite" type="text" aria-describedby="campaignWebsiteHelp" placeholder="Enter your campaign website" value={this.props.newCampaign.campaignWebsite} onChange={(e) => { this.handleFieldChange(e, 'campaignWebsite') }} />
+                                </div>
+
+                                <div className="form-group">
+                                    <label htmlFor="campaignLogo">Campaign Logo</label>
+                                    {/* <div className="custom-file">
                                     <input type="file" className="custom-file-input" id="campaignLogo" value={this.props.newCampaign.campaignLogo} onChange={(e) => {this.handleFieldChange(e, 'campaignLogo') }} />
                                     <label className="custom-file-label" htmlFor="campaignLogo">{logoValue}</label>
                                 </div> */}
-                                <IpfsUpload placeholder="Choose Logo" value={logoValue} fileUploadedCB={this.handleLogoUploaded} />
-                            </div>
-                            <hr />
-                            <div className="form-group">
-                                <div className="form-row">
-                                    <div className="col-md-3">
-                                        <label htmlFor="xPixels">Horizontal Pixels</label>
-                                        <input className="form-control" id="xPixels" type="number" aria-describedby="xPixelsHelp" placeholder="" value={this.props.newCampaign.xPixels} onChange={(e) => {this.handleFieldChange(e, 'xPixels') }}/>
-                                        <small id="xPixelsHelp" className="form-text text-muted">The number of pixels in the horizontal axis</small>
-                                    </div>
-                                    <div className="col-md-3">
-                                        <label htmlFor="yPixels">Vertical Pixels</label>
-                                        <input className="form-control" id="yPixels" type="number" aria-describedby="yPixelsHelp" placeholder="" value={this.props.newCampaign.yPixels} onChange={(e) => {this.handleFieldChange(e, 'yPixels') }}/>
-                                        <small id="yPixelsHelp" className="form-text text-muted">The number of pixels in the vertical axis</small>
-                                    </div>
+                                    <IpfsUpload placeholder="Choose Logo" value={logoValue} fileUploadedCB={this.handleLogoUploaded} />
                                 </div>
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="minimunDonation">Minimum Donation</label>
-                                <div className="form-row">
-                                    <div className="col-md-3">
-                                        <div className="input-group mb-2">
-                                            <div className="input-group-prepend">
-                                                <div className="input-group-text"><i className="fab fa-ethereum"></i></div>
-                                            </div>
-                                            <input className="form-control" id="minimunDonation" type="number" step="0.0001" aria-describedby="minimunDonationHelp" placeholder="0.01" value={this.props.newCampaign.minimunDonation} onChange={(e) => {this.handleFieldChange(e, 'minimunDonation') }}/>
+                                <hr />
+                                <div className="form-group">
+                                    <div className="form-row">
+                                        <div className="col-md-3">
+                                            <label htmlFor="xPixels">Horizontal Pixels</label>
+                                            <input className="form-control" id="xPixels" type="number" aria-describedby="xPixelsHelp" placeholder="" value={this.props.newCampaign.xPixels} onChange={(e) => { this.handleFieldChange(e, 'xPixels') }} />
+                                            <small id="xPixelsHelp" className="form-text text-muted">The number of pixels in the horizontal axis</small>
+                                        </div>
+                                        <div className="col-md-3">
+                                            <label htmlFor="yPixels">Vertical Pixels</label>
+                                            <input className="form-control" id="yPixels" type="number" aria-describedby="yPixelsHelp" placeholder="" value={this.props.newCampaign.yPixels} onChange={(e) => { this.handleFieldChange(e, 'yPixels') }} />
+                                            <small id="yPixelsHelp" className="form-text text-muted">The number of pixels in the vertical axis</small>
                                         </div>
                                     </div>
                                 </div>
-                                <small id="minimunDonationHelp" className="form-text text-muted">The minimum donation accepted in order to get a Pixel 4 Impact. Value is in ether.</small>
-                            </div>
-                            <div className="text-center">
-                                <input className="btn btn-primary" type="button" value="Create Campaign" onClick={this.handleCreateCampaignClick} />
-                            </div>
-                        </form>
-                        {/* <div className="text-center">
+                                <div className="form-group">
+                                    <label htmlFor="minimunDonation">Minimum Donation</label>
+                                    <div className="form-row">
+                                        <div className="col-md-3">
+                                            <div className="input-group mb-2">
+                                                <div className="input-group-prepend">
+                                                    <div className="input-group-text"><i className="fab fa-ethereum"></i></div>
+                                                </div>
+                                                <input className="form-control" id="minimunDonation" type="number" step="0.0001" aria-describedby="minimunDonationHelp" placeholder="0.01" value={this.props.newCampaign.minimunDonation} onChange={(e) => { this.handleFieldChange(e, 'minimunDonation') }} />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <small id="minimunDonationHelp" className="form-text text-muted">The minimum donation accepted in order to get a Pixel 4 Impact. Value is in ether.</small>
+                                </div>
+                                <div className="text-center">
+                                    <input className="btn btn-primary" type="button" value="Create Campaign" onClick={this.handleCreateCampaignClick} />
+                                </div>
+                            </form>
+                            {/* <div className="text-center">
                             <a className="d-block small mt-3" href="login.html">Login Page</a>
                             <a className="d-block small" href="forgot-password.html">Forgot Password?</a>
                         </div> */}
+                        </div>
+                    </div>
+                </div>
+
+
+                <div className="modal" id="createCampaignStatus fade" tabIndex="-1" role="dialog" aria-labelledby="createCampaignStatusTitle" aria-hidden="true">
+                <div className="modal-dialog modal-dialog-centered" role="document">
+                    <div className="modal-content">
+                        {/* <div className="modal-header">
+                            <h2 className="modal-title">Create New Store</h2>
+                            <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={this.props.closeCreateStoreForm}>
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div> */}
+                        <div className="modal-body">
+                           ...
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={this.props.closeCreateStoreForm}>Close</button>
+                            <button type="button" className="btn btn-primary" onClick={this.handleSaveStoreClick} >Create Store</button>
+                        </div>
                     </div>
                 </div>
             </div>
+            </div>  
         )
     }
 }
@@ -112,7 +140,8 @@ class CreateCampaign extends Component {
 
 function mapStateToProps(state) {
     return {
-        newCampaign: createCampaingSelectors.getNewCampaign(state)
+        newCampaign: createCampaingSelectors.getNewCampaign(state),
+        status: createCampaingSelectors.getStatus(state),
     };
 }
 

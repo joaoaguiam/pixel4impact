@@ -11,3 +11,21 @@ body{
     font-family: 'Nunito', sans-serif;
     background-color:#f5f5f5;
 }
+
+.btn-primary { 
+    background-color: #f4511e;
+    border-color: #f4511e;
+}
+
+.btn-primary:hover {
+    background-color: #4FAE54;
+    border-color: #4FAE54;
+}
+
+.form-control:focus, .btn-primary:focus {
+    border-color: #4FAE54;
+    // box-shadow: 0 0 0 0.2rem rgba(244, 81, 30,.25);
+    box-shadow: 0 0 0 0.2rem rgba(79, 174, 84,.25);
+
+    
+}

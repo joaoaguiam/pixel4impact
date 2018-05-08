@@ -8,7 +8,7 @@ import React, { Component } from 'react'
 // import SideBar from './layouts/sidebar/SideBar'
 
 // Styles
-// import 'font-awesome/css/font-awesome.css';
+import 'font-awesome/css/font-awesome.css';
 // import 'font-awesome/scss/font-awesome.scss';
 
 import '../lib/font-awesome/web-fonts-with-css/css/fontawesome-all.css';
@@ -23,6 +23,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.js';
 
 import './App.scss'
 import Footer from './components/footer/Footer';
+import Header from './components/header/Header';
 
 class App extends Component {
     render() {
@@ -30,7 +31,6 @@ class App extends Component {
 
         return (
             <div className="app">
-
                 {this.props.children}
                 {/* <Footer /> */}
                 {/* <Header />

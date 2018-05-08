@@ -65,3 +65,7 @@ export default function reduce(state = initialState, action = {}) {
 export function getNewCampaign(state) {
     return state.createCampaign.newCampaign;
 }
+
+export function getStatus(state) {
+    return state.status;
+}

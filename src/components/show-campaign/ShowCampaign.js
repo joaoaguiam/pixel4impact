@@ -5,6 +5,7 @@ import autoBind from 'react-autobind';
 
 import './ShowCampaign.scss';
 import { getPixel4ImpactDetails } from '../../ethereum/contracts/Pixel4Impact';
+import Header from '../header/Header';
 
 // import { Line } from 'react-progressbar.js';
 
@@ -56,7 +57,7 @@ class ShowCampaign extends Component {
     constructor(props) {
         super(props);
         autoBind(this);
-        
+
         this.lastPixelX = -1;
         this.lastPixelY = -1;
         this.state = {
@@ -69,7 +70,7 @@ class ShowCampaign extends Component {
                 campaignName: '',
                 campaignWebsite: '',
                 campaignLogo: '',
-                pixelColors: this.generatePixels(1,1),
+                pixelColors: this.generatePixels(1, 1),
             }
         }
     }
@@ -97,7 +98,7 @@ class ShowCampaign extends Component {
 
 
     drawBaseCanvas(pixelColors, selectedX = -1, selectedY = -1) {
-        
+
         var ctx = document.getElementById('pixels-canvas').getContext('2d');
         for (var iX = 0; iX < this.state.campaign.xPixels; iX++) {
             for (var iY = 0; iY < this.state.campaign.yPixels; iY++) {
@@ -162,7 +163,7 @@ class ShowCampaign extends Component {
         let details = await getPixel4ImpactDetails(pixel4ImpactAddress);
         details.pixelColors = this.generatePixels(details.xPixels, details.yPixels);
         console.log(details);
-        this.setState({campaign: details});
+        this.setState({ campaign: details });
         this.renderCanvas();
     }
 
@@ -174,31 +175,34 @@ class ShowCampaign extends Component {
         let canvasW = this.state.campaign.xPixels * pixelW;
         let canvasH = this.state.campaign.yPixels * pixelH;
         return (
-            <div className="show-campaign-page">
+            <div>
+                <Header />
 
-                <div className="campaign-container">
+                <div className="show-campaign-page">
 
-                    <div className="row">
-                        <div className="logo-container ">
-                            <img src={this.state.campaign.campaignLogo} alt={this.state.campaign.campaignName} /> 
-                            {/* https://alchetron.com/cdn/gastagus-21950eda-85e7-432e-9fd1-7b3527f8c73-resize-750.png" */}
+                    <div className="campaign-container">
+
+                        <div className="row">
+                            <div className="logo-container ">
+                                <img src={this.state.campaign.campaignLogo} alt={this.state.campaign.campaignName} />
+                                {/* https://alchetron.com/cdn/gastagus-21950eda-85e7-432e-9fd1-7b3527f8c73-resize-750.png" */}
+                            </div>
+                            <div className="">
+
+                                <h1>{this.state.campaign.ngoName}</h1>
+
+                                <h2>{this.state.campaign.campaignName}</h2>
+                            </div>
                         </div>
-                        <div className="">
-
-                            <h1>{this.state.campaign.ngoName}</h1>
-
-                            <h2>{this.state.campaign.campaignName}</h2>
+                        <div className="canvas-container">
+                            <canvas id="pixels-canvas" width={canvasW} height={canvasH} onClick={this.handleCanvasClick}></canvas>
+                        </div>
+                        <div className="row btns-container">
+                            <input className="btn btn-outline-primary contributions" type="button" value="Contributions" />
+                            <input className="btn btn-success donate" type="button" value="Buy a Pixel4Impact" />
                         </div>
                     </div>
-                    <div className="canvas-container">
-                        <canvas id="pixels-canvas" width={canvasW} height={canvasH} onClick={this.handleCanvasClick}></canvas>
-                    </div>
-                    <div className="row btns-container">
-                        <input className="btn btn-outline-primary contributions" type="button" value="Contributions" />
-                        <input className="btn btn-success donate" type="button" value="Buy a Pixel4Impact" />
-                    </div>
-                </div>
-                {/* <div className="container col-sm-4 main-container">
+                    {/* <div className="container col-sm-4 main-container">
                     <div className="row">
                         <div className="logo-container">
                             <img src="https://mycncjobs.com/public/uploads/employer/JOBPORTAL-1513181546.png" />
@@ -216,7 +220,8 @@ class ShowCampaign extends Component {
                         <input className="btn btn-success" type="button" value="Donate" />
                     </div>
                 </div> */}
-            </div>
+                </div>
+            </div>  
         )
     }
 }
