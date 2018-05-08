@@ -31,9 +31,10 @@ class Header extends Component {
 
 
     render() {
-        let url = window.location.href;
-
-        let isCreateCampaign = url.includes('create-campaign') ? 'active' : '';
+        let url = window.location.pathname;
+        console.log(url);
+        // debugger;
+        let isCreateCampaign = url.includes('create-campaign') || url === '/' ? 'active' : '';
         // let isCreateCampaign = url.includes('create-campaign') ? 'active' : '';
         return (
             <nav className="navbar navbar-expand-md navbar-dark">
