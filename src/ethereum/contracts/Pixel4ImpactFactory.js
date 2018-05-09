@@ -62,8 +62,8 @@ function _createPixel4ImpactSmartContract(xPixels, yPixels, minDonation, metadat
 export async function createPixel4Impact(campaign, dispatch) {
     return new Promise(async (resolve, reject) => {
         try {
-            let xPixels = campaign.xPixels;
-            let yPixels = campaign.yPixels;
+            let xPixels = parseInt(campaign.xPixels);
+            let yPixels = parseInt(campaign.yPixels);
             let minDonation = web3.toWei(parseInt(campaign.minDonation), 'ether');
             let metadataUri = campaign.metadataUri;
 

@@ -9,8 +9,8 @@ import Header from '../header/Header';
 
 // import { Line } from 'react-progressbar.js';
 
-// import * as createEventSelectors from '../../store/create-event/reducer';
-// import * as createEventActions from '../../store/create-event/actions';
+import * as showCampaignSelectors from '../../store/show-campaign/reducer';
+import * as showCampaignActions from '../../store/show-campaign/actions';
 
 // import CreateEventNextButton from './navigation/next-button/CreateEventNextButton';
 
@@ -159,12 +159,13 @@ class ShowCampaign extends Component {
     }
     componentDidMount = async () => {
         let pixel4ImpactAddress = this.props.routeParams.address;
-        console.log(pixel4ImpactAddress);
-        let details = await getPixel4ImpactDetails(pixel4ImpactAddress);
-        details.pixelColors = this.generatePixels(details.xPixels, details.yPixels);
-        console.log(details);
-        this.setState({ campaign: details });
-        this.renderCanvas();
+        this.props.dispatch(showCampaignActions.fetchCampaing(pixel4ImpactAddress));
+        // console.log(pixel4ImpactAddress);
+        // let details = await getPixel4ImpactDetails(pixel4ImpactAddress);
+        // details.pixelColors = this.generatePixels(details.xPixels, details.yPixels);
+        // console.log(details);
+        // this.setState({ campaign: details });
+        // this.renderCanvas();
     }
 
     handleCanvasClick(e) {
@@ -221,7 +222,7 @@ class ShowCampaign extends Component {
                     </div>
                 </div> */}
                 </div>
-            </div>  
+            </div>
         )
     }
 }

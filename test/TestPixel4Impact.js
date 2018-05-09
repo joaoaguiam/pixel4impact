@@ -73,7 +73,7 @@ contract("Pixel4Impact", async function (accounts) {
                 for (let y = 0; y < yPixels; y++) {
                     let ownerBalance = parseInt(web3.eth.getBalance(owner).toNumber());
                     let expectedBalance = ownerBalance+minDonation;
-                    let res = await contract.getPixel(x, y, "red",{from: user2, value: minDonation});
+                    let res = await contract.donatePixel(x, y, "red",{from: user2, value: minDonation});
                     let newOwnerBalance = web3.eth.getBalance(owner).toNumber();
                     
                     assert.equal(expectedBalance, newOwnerBalance);

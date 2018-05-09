@@ -1,0 +1,1 @@
+export const CAMPAIGN_FETCHED = 'showCampaign.CAMPAIGN_FETCHED';

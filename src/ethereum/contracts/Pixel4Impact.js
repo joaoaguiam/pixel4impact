@@ -16,6 +16,8 @@ export async function getPixel4ImpactDetails(address) {
         try {
             let contract = Pixel4Impact(address);
             let details = await contract.getDetailsAsync.call();
+            console.log(details);
+            debugger;
             let result = {
                 xPixels: parseInt(details[0].toNumber()),
                 yPixels: parseInt(details[1].toNumber()),

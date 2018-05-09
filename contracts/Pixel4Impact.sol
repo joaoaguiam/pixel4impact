@@ -59,8 +59,8 @@ contract Pixel4Impact is ERC721Token, Ownable {
         return totalSupply().add(1); 
     }
 
-    function getDetails() public view returns(uint16 _xPixels, uint16 _yPixels, uint _minDonation, string _metadataUri) {
-        return (xPixels, yPixels, minDonation, metadataUri);
+    function getDetails() public view returns(uint _xPixels, uint _yPixels, uint _minDonation, string _metadataUri) {
+        return (uint(xPixels), uint(yPixels), minDonation, metadataUri);
     }
 
     
