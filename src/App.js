@@ -17,6 +17,7 @@ import '../lib/font-awesome/web-fonts-with-css/css/fontawesome-all.css';
 import 'jquery/dist/jquery.min.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.js';
+
 // import 'foundation-sites/dist/css/foundation.min.css';
 // import 'foundation-sites/dist/js/foundation.min.js';
 // import NotificationGenerator from './layouts/notifications/NotificationGenerator';
@@ -31,7 +32,11 @@ class App extends Component {
 
         return (
             <div className="app">
+                
                 {this.props.children}
+                <div className="hands-bg">
+
+                </div>
                 {/* <Footer /> */}
                 {/* <Header />
         

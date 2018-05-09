@@ -57,7 +57,25 @@
         background-color: #e9ecef;
         border-left: 1px solid #ced4da;
         border-radius: 0 .25rem .25rem 0;
+    }      
+
+    #campaignContractModal {
+        .loading {
+            text-align: center;
+            width: 100%;
+            display: block;
+        }
+        .success {
+            color: #4FAE54;
+        }
+
+        .button-container {
+            margin: 1.5em 0;
+        }
+        .info-text {
+            margin-top: 1em;
+        }
     }
     
-  }
+}
   

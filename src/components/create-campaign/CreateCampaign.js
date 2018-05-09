@@ -2,9 +2,11 @@ import React, { Component, ReactDOM } from 'react';
 import { connect } from 'react-redux';
 
 import autoBind from 'react-autobind';
+import { browserHistory } from 'react-router'
 
 import './CreateCampaign.scss';
 // import IpfsUpload from '../generic/ipfs/ipfs-upload/IpfsUpload';
+import $ from 'jquery';
 
 import * as createCampaingActions from '../../store/create-campaign/actions';
 import * as createCampaingSelectors from '../../store/create-campaign/reducer';
@@ -29,16 +31,64 @@ class CreateCampaign extends Component {
     handleCreateCampaignClick() {
         this.props.dispatch(createCampaingActions.createCampaignOnBlockchain());
     }
+    componentDidUpdate() {
+        if (this.props.status === createCampaingSelectors.CAMPAIGN_STATUS.WAITING_MINING ||
+            this.props.status === createCampaingSelectors.CAMPAIGN_STATUS.WAITING_MINING) {
 
+        }
+        $("#campaignContractModal").modal({ backdrop: "static" });
+    }
+
+    openCampaignPage() {
+        browserHistory.push('/show-campaign/'+this.props.contractDetails.address);
+    }
+
+    renderContractConfirmationModal() {
+        if (this.props.status === createCampaingSelectors.CAMPAIGN_STATUS.WAITING_MINING) {
+            return (
+                <div id="campaignContractModal" className="modal fade" role="dialog">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-body">
+                                {/* <button type="button" className="close" data-dismiss="modal">&times;</button> */}
+                                <div className="info-text text-center"><span>The campaign smart contract is being confirmed by the blockchain...</span></div>
+                                <div className="text-center button-container">
+                                    <div className="loading"><i className="fas fa-spinner fa-spin fa-2x"></i></div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            )
+        };
+        if (this.props.status === createCampaingSelectors.CAMPAIGN_STATUS.CREATED) {
+            return (
+                <div id="campaignContractModal" className="modal fade" role="dialog">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-body">
+                                {/* <button type="button" className="close" data-dismiss="modal">&times;</button> */}
+
+                                <div className="info-text text-center"><span><i className="fas fa-check-circle success"></i> The campaign smart contract was successfully created</span></div>
+                                <div className="text-center button-container">
+                                    <input className="btn btn-secondary" type="button" value="Open Campaign Page" onClick={this.openCampaignPage} />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )
+        };
+
+        return null;
+    }
 
     render() {
         let logoValue = (this.props.newCampaign.campaignLogo === '') ? 'Choose Logo' : this.props.newCampaign.campaignLogo;
         console.log(this.props);
-        if (this.props.status === createCampaingSelectors.CAMPAIGN_STATUS.CREATED) {
-            alert("Campaign created with address: " + this.props.newCampaign.contractDetails.address);
-        }
-        // let showStatusDialog = (this.props.status === createCampaingSelectors.CAMPAIGN_STATUS.CREATED
-
+        
         return (
             <div>
                 <Header />
@@ -104,35 +154,11 @@ class CreateCampaign extends Component {
                                     <input className="btn btn-primary" type="button" value="Create Campaign" onClick={this.handleCreateCampaignClick} />
                                 </div>
                             </form>
-                            {/* <div className="text-center">
-                            <a className="d-block small mt-3" href="login.html">Login Page</a>
-                            <a className="d-block small" href="forgot-password.html">Forgot Password?</a>
-                        </div> */}
                         </div>
                     </div>
-                </div>
-
-
-                <div className="modal" id="createCampaignStatus fade" tabIndex="-1" role="dialog" aria-labelledby="createCampaignStatusTitle" aria-hidden="true">
-                <div className="modal-dialog modal-dialog-centered" role="document">
-                    <div className="modal-content">
-                        {/* <div className="modal-header">
-                            <h2 className="modal-title">Create New Store</h2>
-                            <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={this.props.closeCreateStoreForm}>
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div> */}
-                        <div className="modal-body">
-                           ...
-                        </div>
-                        <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={this.props.closeCreateStoreForm}>Close</button>
-                            <button type="button" className="btn btn-primary" onClick={this.handleSaveStoreClick} >Create Store</button>
-                        </div>
-                    </div>
+                    {this.renderContractConfirmationModal()}
                 </div>
             </div>
-            </div>  
         )
     }
 }
@@ -142,6 +168,7 @@ function mapStateToProps(state) {
     return {
         newCampaign: createCampaingSelectors.getNewCampaign(state),
         status: createCampaingSelectors.getStatus(state),
+        contractDetails: createCampaingSelectors.getContractDetails(state),
     };
 }
 

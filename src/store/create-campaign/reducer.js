@@ -67,5 +67,9 @@ export function getNewCampaign(state) {
 }
 
 export function getStatus(state) {
-    return state.status;
+    return state.createCampaign.status;
+}
+
+export function getContractDetails(state) {
+    return state.createCampaign.contractDetails;
 }
