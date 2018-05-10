@@ -4,13 +4,16 @@ import { connect } from 'react-redux';
 import autoBind from 'react-autobind';
 
 import './ShowCampaign.scss';
-import { getPixel4ImpactDetails } from '../../ethereum/contracts/Pixel4Impact';
+
 import Header from '../header/Header';
 
 // import { Line } from 'react-progressbar.js';
 
 import * as showCampaignSelectors from '../../store/show-campaign/reducer';
 import * as showCampaignActions from '../../store/show-campaign/actions';
+
+import { SliderPicker } from 'react-color';
+
 
 // import CreateEventNextButton from './navigation/next-button/CreateEventNextButton';
 
@@ -49,8 +52,7 @@ import * as showCampaignActions from '../../store/show-campaign/actions';
 
 // const xPixels = 80;
 // const yPixels = 30;
-const pixelW = 10;
-const pixelH = 10;
+
 const emptyColor = '#f5f5f5';
 
 class ShowCampaign extends Component {
@@ -60,102 +62,93 @@ class ShowCampaign extends Component {
 
         this.lastPixelX = -1;
         this.lastPixelY = -1;
+        this.pixelW = 10;
+        this.pixelH = 10;
         this.state = {
-            campaign: {
-                xPixels: 1,
-                yPixels: 1,
-                minDonation: 0.001,
-                metadataUri: '',
-                ngoName: '',
-                campaignName: '',
-                campaignWebsite: '',
-                campaignLogo: '',
-                pixelColors: this.generatePixels(1, 1),
-            }
+            mouseColor: '#f4511e',
+            selectMode: false
         }
     }
 
-    generatePixels(xPixels, yPixels) {
-        let pixelColors = [];
+    // generatePixels(xPixels, yPixels) {
+    //     let pixelColors = [];
 
-        for (var i = 0; i < xPixels; i++) {
-            pixelColors[i] = [];
+    //     for (var i = 0; i < xPixels; i++) {
+    //         pixelColors[i] = [];
 
-            for (var j = 0; j < yPixels; j++) {
-                pixelColors[i][j] = 'rgb(' + Math.floor(Math.random() * 255) + ', ' +
-                    Math.floor(Math.random() * 255) + ',' + Math.floor(Math.random() * 255) + ')';
+    //         for (var j = 0; j < yPixels; j++) {
+    //             pixelColors[i][j] = 'rgb(' + Math.floor(Math.random() * 255) + ', ' +
+    //                 Math.floor(Math.random() * 255) + ',' + Math.floor(Math.random() * 255) + ')';
 
-                if (i % Math.floor(Math.random() * 3) === 0) {
-                    pixelColors[i][j] = emptyColor;
-                }
-                if (j % Math.floor(Math.random() * 3) === 0) {
-                    pixelColors[i][j] = emptyColor;
-                }
-            }
-        }
-        return pixelColors;
-    }
+    //             if (i % Math.floor(Math.random() * 3) === 0) {
+    //                 pixelColors[i][j] = emptyColor;
+    //             }
+    //             if (j % Math.floor(Math.random() * 3) === 0) {
+    //                 pixelColors[i][j] = emptyColor;
+    //             }
+    //         }
+    //     }
+    //     return pixelColors;
+    // }
 
 
-    drawBaseCanvas(pixelColors, selectedX = -1, selectedY = -1) {
+    drawBaseCanvas(selectedX = -1, selectedY = -1) {
 
         var ctx = document.getElementById('pixels-canvas').getContext('2d');
-        for (var iX = 0; iX < this.state.campaign.xPixels; iX++) {
-            for (var iY = 0; iY < this.state.campaign.yPixels; iY++) {
-                ctx.fillStyle = pixelColors[iX][iY];
-                ctx.fillRect(iX * pixelW, iY * pixelH, pixelW, pixelH);
+        for (var iX = 0; iX < this.props.campaign.xPixels; iX++) {
+            for (var iY = 0; iY < this.props.campaign.yPixels; iY++) {
+                let color = this.props.campaign.pixels[iX][iY];
+                if (color === undefined) {
+                    color = emptyColor;
+                }
+                ctx.fillStyle = color;
+                ctx.fillRect(iX * this.pixelW, iY * this.pixelH, this.pixelW, this.pixelH);
             }
         }
 
-        if (selectedX !== -1 && selectedY !== -1) {
-            if (this.state.campaign.pixelColors[selectedX][selectedY] === emptyColor) {
-                ctx.fillStyle = '#FF0000';
-                ctx.fillRect(selectedX * pixelW, selectedY * pixelH, pixelW, pixelH);
+        if (this.state.selectMode && selectedX !== -1 && selectedY !== -1) {
+            if (this.props.campaign.pixels[selectedX][selectedY] === undefined) {
+                ctx.fillStyle = this.state.mouseColor;
+                ctx.fillRect(selectedX * this.pixelW, selectedY * this.pixelH, this.pixelW, this.pixelH);
             }
         }
     }
-
+    getMousePos(canvas, evt) {
+        var rect = canvas.getBoundingClientRect();
+        return {
+            x: evt.clientX - rect.left,
+            y: evt.clientY - rect.top
+        };
+    }
+    handleMouseMove(evt) {
+        let canvas = document.getElementById('pixels-canvas');
+        var mousePos = this.getMousePos(canvas, evt);
+        let iX = Math.floor(mousePos.x / this.pixelW);
+        let iY = Math.floor(mousePos.y / this.pixelH);
+        this.lastPixelX = iX;
+        this.lastPixelY = iY;
+        // setLastPixel(iX, iY);
+        this.drawBaseCanvas(iX, iY);
+    }
     renderCanvas() {
-        this.drawBaseCanvas(this.state.campaign.pixelColors);
+        this.drawBaseCanvas();
         let canvas = document.getElementById('pixels-canvas');
 
-        let getMousePos = (canvas, evt) => {
-            var rect = canvas.getBoundingClientRect();
-            return {
-                x: evt.clientX - rect.left,
-                y: evt.clientY - rect.top
-            };
-        }
 
-        // let highlightPixel = (canvas, i, j) => {
-        //     let context = canvas.getContext('2d');
-        //     context.fillStyle = '#000';
-        //     context.fillRect(j * 8, i * 8, 8, 8);
-        // }
+
         let drawFunction = this.drawBaseCanvas;
-        let pixelColors = this.pixelColors;
 
         let setLastPixel = (pixelX, pixelY) => {
             this.lastPixelX = pixelX;
             this.lastPixelY = pixelY;
         }
-        canvas.addEventListener('mousemove', function (evt) {
-            console.log(evt);
-            var mousePos = getMousePos(canvas, evt);
-            console.log(mousePos);
-            var message = 'Mouse position: ' + mousePos.x + ',' + mousePos.y;
-            console.log(message);
-            let iX = Math.floor(mousePos.x / pixelW);
-            let iY = Math.floor(mousePos.y / pixelH);
-            console.log("iX:" + iX + ", iY:" + iY);
-            //highlightPixel(canvas, i,j);
-            setLastPixel(iX, iY);
-            drawFunction(pixelColors, iX, iY);
-        }, false);
+        let pixelW = this.pixelW;
+        let pixelH = this.pixelH;
+        canvas.addEventListener('mousemove', this.handleMouseMove, false);
+    }
 
-
-
-
+    componentDidUpdate() {
+        this.renderCanvas();
     }
     componentDidMount = async () => {
         let pixel4ImpactAddress = this.props.routeParams.address;
@@ -170,40 +163,66 @@ class ShowCampaign extends Component {
 
     handleCanvasClick(e) {
         console.log(e);
+        alert("Will initiate the donation of Pixel "+this.lastPixelX+ " x "+this.lastPixelY);
     }
+    handleColorChange(color) {
+        console.log(color.hex);
+        this.setState({ mouseColor: color.hex });
+    }
+
+    handleDonatePixelClick(e) {
+        this.setState({ selectMode: true });
+    }
+
     render() {
         console.log(this.props);
-        let canvasW = this.state.campaign.xPixels * pixelW;
-        let canvasH = this.state.campaign.yPixels * pixelH;
-        return (
-            <div>
-                <Header />
 
-                <div className="show-campaign-page">
+        if (this.props.isFetched) {
+            let canvasW = this.props.campaign.xPixels * this.pixelW;
+            let canvasH = this.props.campaign.yPixels * this.pixelH;
+            let canvasClass = this.state.selectMode ? 'select-mode': '';
 
-                    <div className="campaign-container">
+            return (
+                <div>
+                    <Header />
+                    <div className="container show-campaign-page">
+                        <div className="card card-register mx-auto col-sm-8">
+                            {/* <div className="card-header">Create Pixel 4 Impact campaign</div> */}
+                            <div className="card-body">
 
-                        <div className="row">
-                            <div className="logo-container ">
-                                <img src={this.state.campaign.campaignLogo} alt={this.state.campaign.campaignName} />
-                                {/* https://alchetron.com/cdn/gastagus-21950eda-85e7-432e-9fd1-7b3527f8c73-resize-750.png" */}
+
+
+                                <div className="row">
+                                    <div className="logo-container ">
+                                        <img src={this.props.campaign.campaignLogo} alt={this.props.campaign.campaignName} />
+                                        {/* https://alchetron.com/cdn/gastagus-21950eda-85e7-432e-9fd1-7b3527f8c73-resize-750.png" */}
+                                    </div>
+                                    <div className="">
+
+                                        <h1>{this.props.campaign.ngoName}</h1>
+
+                                        <h2>{this.props.campaign.campaignName}</h2>
+                                    </div>
+                                </div>
+                                <div className="canvas-container text-center">
+                                    <canvas id="pixels-canvas" className={canvasClass} width={canvasW} height={canvasH} onClick={this.handleCanvasClick}></canvas>
+                                </div>
+                                {this.state.selectMode &&
+                                    <div>
+                                        <SliderPicker
+                                            color={this.state.mouseColor}
+                                            onChangeComplete={this.handleColorChange}
+                                        />
+                                    </div>
+                                }
+                                <div className="row btns-container">
+                                    <input className="btn btn-outline-primary contributions" type="button" value="Donators" />
+                                    {!this.state.selectMode && <input className="btn btn-primary donate" type="button" value="Donate a Pixel4Impact" onClick={this.handleDonatePixelClick} />}
+                                    {this.state.selectMode && <span className="donate">Select a Color and click on the Pixel to donate</span>}
+                                </div>
+
                             </div>
-                            <div className="">
-
-                                <h1>{this.state.campaign.ngoName}</h1>
-
-                                <h2>{this.state.campaign.campaignName}</h2>
-                            </div>
-                        </div>
-                        <div className="canvas-container">
-                            <canvas id="pixels-canvas" width={canvasW} height={canvasH} onClick={this.handleCanvasClick}></canvas>
-                        </div>
-                        <div className="row btns-container">
-                            <input className="btn btn-outline-primary contributions" type="button" value="Contributions" />
-                            <input className="btn btn-success donate" type="button" value="Buy a Pixel4Impact" />
-                        </div>
-                    </div>
-                    {/* <div className="container col-sm-4 main-container">
+                            {/* <div className="container col-sm-4 main-container">
                     <div className="row">
                         <div className="logo-container">
                             <img src="https://mycncjobs.com/public/uploads/employer/JOBPORTAL-1513181546.png" />
@@ -221,16 +240,31 @@ class ShowCampaign extends Component {
                         <input className="btn btn-success" type="button" value="Donate" />
                     </div>
                 </div> */}
+                        </div>
+                    </div>
                 </div>
-            </div>
-        )
+            )
+        }
+        else {
+            return (
+                <div>
+                    <Header />
+
+                    <div className="show-campaign-page text-center">
+
+                        Loading...
+                    </div>
+                </div>
+            )
+        }
     }
 }
 
 
 function mapStateToProps(state) {
     return {
-        // currentStep: createEventSelectors.getCurrentStep(state)
+        isFetched: showCampaignSelectors.isFetched(state),
+        campaign: showCampaignSelectors.getCampaign(state),
     };
 }
 

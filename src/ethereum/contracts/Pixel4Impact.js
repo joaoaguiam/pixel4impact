@@ -6,18 +6,17 @@ import Pixel4ImpactArtifact from '../../../build/contracts/Pixel4Impact.json';
 export const Pixel4Impact = function (address) {
     let abiStr = JSON.stringify(Pixel4ImpactArtifact.abi);
     let Pixel4ImpactABI = web3.eth.contract(JSON.parse(abiStr))
-
-    return Promise.promisifyAll(Pixel4ImpactABI.at(address));
+    let contract = Pixel4ImpactABI.at(address);
+    return Promise.promisifyAll(contract);
 }
 
 
 export async function getPixel4ImpactDetails(address) {
     return new Promise(async (resolve, reject) => {
         try {
-            let contract = Pixel4Impact(address);
+            let contract = Pixel4Impact(address);;
             let details = await contract.getDetailsAsync.call();
             console.log(details);
-            debugger;
             let result = {
                 xPixels: parseInt(details[0].toNumber()),
                 yPixels: parseInt(details[1].toNumber()),
@@ -35,12 +34,20 @@ export async function getPixel4ImpactDetails(address) {
             result.campaignLogo = metadata.campaignLogo;
 
 
+            result.pixels = new Array(result.xPixels);
 
-            // metadataUri: '',
-            //     ngoName: '',
-            //     campaignName: '',
-            //     campaignWebsite: '',
-            //     campaignLogo: '',
+            for (let iX = 0; iX < result.xPixels; iX++) {
+                result.pixels[iX] = new Array(result.yPixels);
+            }
+
+            let numPixels = await contract.getNumPixelsTakenAsync.call();
+            for (let i = 0; i < numPixels; i++) {
+                let res = await contract.getPixelTakenByIndex.call();
+                let x = parseInt(res[0].toNumber());
+                let y = parseInt(res[1].toNumber());
+                let color = res[2];
+                result.pixels[x][y] = color;
+            }
 
             resolve(result);
         } catch (e) {

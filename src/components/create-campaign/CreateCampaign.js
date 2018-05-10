@@ -40,6 +40,7 @@ class CreateCampaign extends Component {
     }
 
     openCampaignPage() {
+        $("#campaignContractModal").modal('hide');
         browserHistory.push('/show-campaign/'+this.props.contractDetails.address);
     }
 

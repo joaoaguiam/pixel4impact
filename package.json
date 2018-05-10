@@ -80,6 +80,7 @@
     "react-bootstrap": "^0.32.1",
     "react-bootstrap-date-picker": "^5.1.0",
     "react-bs-notifier": "^5.0.0",
+    "react-color": "^2.14.1",
     "react-datepicker": "^1.4.1",
     "react-dom": "^15.6.2",
     "react-draft-wysiwyg": "^1.12.13",
