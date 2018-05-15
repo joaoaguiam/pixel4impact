@@ -13,7 +13,7 @@ import $ from "jquery";
 import * as showCampaignSelectors from "../../store/show-campaign/reducer";
 import * as showCampaignActions from "../../store/show-campaign/actions";
 
-import { SliderPicker, TwitterPicker } from "react-color";
+import { TwitterPicker } from "react-color";
 
 
 const maxWidth = 670;
@@ -170,6 +170,16 @@ class ShowCampaign extends Component {
     handleDonationChange(e) {
         this.setState({ donation: e.target.value })
     }
+    handleConfirmDonationClick(e) {
+        let pixel4ImpactAddress = this.props.routeParams.address;
+        this.props.dispatch(showCampaignActions.confirmDonationOnBlockchain(pixel4ImpactAddress, this.state.selectedPixel, this.state.mouseColor, this.state.donation));
+    }
+
+    componentWillReceiveProps(nextProps)  {
+        if (nextProps.isFetched && this.state.donation === undefined) {
+            this.setState({donation: nextProps.campaign.minDonation});
+        }
+    }
 
     render() {
         console.log(this.props);
@@ -179,7 +189,7 @@ class ShowCampaign extends Component {
             let canvasW = this.props.campaign.xPixels * pixelSize;
             let canvasH = this.props.campaign.yPixels * pixelSize;
             let canvasClass = this.state.selectMode ? "select-mode" : "";
-            let donation = (this.state.donation !== undefined) ? this.state.donation : this.props.campaign.minDonation;
+            // let donation = (this.state.donation !== undefined) ? this.state.donation : this.props.campaign.minDonation;
             let selectedPixel = "(" + this.state.selectedPixel.x + " , " + this.state.selectedPixel.y + ")";
 
             return (
@@ -233,7 +243,7 @@ class ShowCampaign extends Component {
                                                             <div className="input-group-prepend">
                                                                 <div className="input-group-text"><i className="fab fa-ethereum"></i></div>
                                                             </div>
-                                                            <input className="form-control" id="donation" type="number" step="0.0001" aria-describedby="donationHelp" placeholder={this.props.campaign.minDonation} value={donation} onChange={this.handleDonationChange} />
+                                                            <input className="form-control" id="donation" type="number" step="0.0001" aria-describedby="donationHelp" placeholder={this.props.campaign.minDonation} value={this.state.donation} onChange={this.handleDonationChange} />
                                                         </div>
                                                     </div>
                                                 </div>

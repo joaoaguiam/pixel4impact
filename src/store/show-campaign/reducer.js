@@ -3,6 +3,13 @@ import * as types from './actionTypes';
 import Immutable from 'seamless-immutable';
 
 
+export const DONATION_STATUS = {
+    DRAFT: 0,
+    CONFIRMED: 1,
+    WAITING_MINING: 2,
+    MINED: 3
+}
+
 const initialState = Immutable({
     campaign: {
         ngoName: '',
@@ -14,7 +21,9 @@ const initialState = Immutable({
         minDonation: 0,
         metadataUri: '',
     },
-    isFetched: false
+    isFetched: false,
+    status: DONATION_STATUS.DRAFT,
+    txHash: undefined,
 });
 
 export default function reduce(state = initialState, action = {}) {
@@ -38,3 +47,11 @@ export function getCampaign(state) {
 export function isFetched(state) {
     return state.showCampaign.isFetched;
 }
+
+export function getStatus(state) {
+    return state.showCampaign.status;
+}
+export function getTxHash(state) {
+    return state.showCampaign.txHash;
+}
+
