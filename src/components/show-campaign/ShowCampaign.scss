@@ -1,6 +1,7 @@
 .show-campaign-page {
     margin-bottom: 1.5em;
     margin-top: 1.5em;
+    
     .logo-container {
         padding: 0 1em 2em 1em;
         img {
@@ -23,6 +24,26 @@
             right: 0;
         }
     }
+    .select-mode {
+        cursor: pointer;
+    }
+    .selection-details {
+        margin-top: 2em;
+        padding: 2em;
+        border: 0px solid rgba(0, 0, 0, 0.25);
+        box-shadow: rgba(0, 0, 0, 0.25) 0px 1px 4px;
+        border-radius: 4px;
+    
+        .detail-field {
+            margin-top: 1em;
+        }
+        .no-pixel, .selected-pixel {
+            color:#666;
+            // font-weight: 100;
+        }
+        
+    }
+
     
 }
 

@@ -11,7 +11,7 @@ const initialState = Immutable({
         campaignLogo: '',
         xPixels: 0,
         yPixels: 0,
-        minimunDonation: 0,
+        minDonation: 0,
         metadataUri: '',
     },
     isFetched: false

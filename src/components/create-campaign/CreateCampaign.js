@@ -138,18 +138,18 @@ class CreateCampaign extends Component {
                                     </div>
                                 </div>
                                 <div className="form-group">
-                                    <label htmlFor="minimunDonation">Minimum Donation</label>
+                                    <label htmlFor="minDonation">Minimum Donation</label>
                                     <div className="form-row">
                                         <div className="col-md-3">
                                             <div className="input-group mb-2">
                                                 <div className="input-group-prepend">
                                                     <div className="input-group-text"><i className="fab fa-ethereum"></i></div>
                                                 </div>
-                                                <input className="form-control" id="minimunDonation" type="number" step="0.0001" aria-describedby="minimunDonationHelp" placeholder="0.01" value={this.props.newCampaign.minimunDonation} onChange={(e) => { this.handleFieldChange(e, 'minimunDonation') }} />
+                                                <input className="form-control" id="minDonation" type="number" step="0.0001" aria-describedby="minDonationHelp" placeholder="0.01" value={this.props.newCampaign.minDonation} onChange={(e) => { this.handleFieldChange(e, 'minDonation') }} />
                                             </div>
                                         </div>
                                     </div>
-                                    <small id="minimunDonationHelp" className="form-text text-muted">The minimum donation accepted in order to get a Pixel 4 Impact. Value is in ether.</small>
+                                    <small id="minDonationHelp" className="form-text text-muted">The minimum donation accepted in order to get a Pixel 4 Impact. Value is in ether.</small>
                                 </div>
                                 <div className="text-center">
                                     <input className="btn btn-primary" type="button" value="Create Campaign" onClick={this.handleCreateCampaignClick} />

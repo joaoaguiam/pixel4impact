@@ -64,7 +64,7 @@ export async function createPixel4Impact(campaign, dispatch) {
         try {
             let xPixels = parseInt(campaign.xPixels);
             let yPixels = parseInt(campaign.yPixels);
-            let minDonation = web3.toWei(parseInt(campaign.minDonation), 'ether');
+            let minDonation = web3.toWei(parseFloat(campaign.minDonation), 'ether');
             let metadataUri = campaign.metadataUri;
 
             let contractDetails = {
