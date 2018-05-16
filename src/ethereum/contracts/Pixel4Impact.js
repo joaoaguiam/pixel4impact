@@ -1,4 +1,4 @@
-import { web3,  waitForMined } from '../uport/uport-connectors'
+import { web3, waitForMined } from '../uport/uport-connectors'
 import Promise from "bluebird";
 
 import Pixel4ImpactArtifact from '../../../build/contracts/Pixel4Impact.json';
@@ -10,6 +10,18 @@ export const Pixel4Impact = function (address) {
     let Pixel4ImpactABI = web3.eth.contract(JSON.parse(abiStr))
     let contract = Pixel4ImpactABI.at(address);
     return Promise.promisifyAll(contract);
+
+    // contract.setProvider(web3.currentProvider);
+    //dirty hack for web3@1.0.0 support for localhost testrpc, see https://github.com/trufflesuite/truffle-contract/issues/56#issuecomment-331084530
+    // debugger;
+    // if (typeof contract.currentProvider.sendAsync !== "function") {
+    //   contract.currentProvider.sendAsync = function() {
+    //     return contract.currentProvider.send.apply(
+    //       contract.currentProvider, arguments
+    //     );
+    //   };
+    // }
+    // return contract;
 }
 
 
@@ -19,7 +31,7 @@ export async function getPixel4ImpactDetails(address) {
             let contract = Pixel4Impact(address);
             let details = await contract.getDetailsAsync.call();
             console.log(details);
-            console.log("minDonation:"+details[2].toNumber());
+            console.log("minDonation:" + details[2].toNumber());
             let result = {
                 xPixels: parseInt(details[0].toNumber()),
                 yPixels: parseInt(details[1].toNumber()),
@@ -44,15 +56,33 @@ export async function getPixel4ImpactDetails(address) {
             }
 
             let numPixels = await contract.getNumPixelsTakenAsync.call();
+            numPixels = parseInt(numPixels.toNumber());
+            console.log("numPixels: " + numPixels);
+            let pixelsHandled = 0;
             for (let i = 0; i < numPixels; i++) {
-                let res = await contract.getPixelTakenByIndex.call();
-                let x = parseInt(res[0].toNumber());
-                let y = parseInt(res[1].toNumber());
-                let color = res[2];
-                result.pixels[x][y] = color;
-            }
+                contract.getPixelTakenByIndex.call(i, (err, res) => {
+                    // console.log(err);
+                    // console.log(res);
+                    let x = parseInt(res[0].toNumber());
+                    let y = parseInt(res[1].toNumber());
+                    let color = res[2];
+                    result.pixels[x][y] = color;
+                    pixelsHandled++;
+                    if (pixelsHandled == numPixels) {
+                        resolve(result);
+                    }
+                });
 
-            resolve(result);
+                // let res = await contract.getPixelTakenByIndexAsync.call(i);
+                // debugger;
+                // let x = parseInt(res[0].toNumber());
+                // let y = parseInt(res[1].toNumber());
+                // let color = res[2];
+                // result.pixels[x][y] = color;
+            }
+            if (numPixels === 0) {
+                resolve(result);
+            }
         } catch (e) {
             console.log(e);
             reject(e);
@@ -64,7 +94,7 @@ export async function getPixel4ImpactDetails(address) {
 function _donatePixel(address, x, y, color, donation, dispatch) {
     return new Promise((resolve, reject) => {
         let contract = Pixel4Impact(address);
-        contract.donatePixel(x, y, color, {value: donation},
+        contract.donatePixel(x, y, color, { value: donation },
             (err, txHash) => {
                 if (err) {
                     reject(err);
@@ -98,7 +128,7 @@ export async function donatePixel(address, pixelX, pixelY, color, donation, disp
             dispatch(showCampaignActions.updateStatus(DONATION_STATUS.MINED));
 
             // dispatch(createCampaignActions.eventCreationCompleted())
-            
+
             resolve(tx);
         } catch (e) {
             console.log(e);

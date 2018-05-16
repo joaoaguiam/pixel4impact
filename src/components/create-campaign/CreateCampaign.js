@@ -32,10 +32,10 @@ class CreateCampaign extends Component {
         this.props.dispatch(createCampaingActions.createCampaignOnBlockchain());
     }
     componentDidUpdate() {
-        if (this.props.status === createCampaingSelectors.CAMPAIGN_STATUS.WAITING_MINING ||
-            this.props.status === createCampaingSelectors.CAMPAIGN_STATUS.WAITING_MINING) {
+        // if (this.props.status === createCampaingSelectors.CAMPAIGN_STATUS.WAITING_MINING ||
+        //     this.props.status === createCampaingSelectors.CAMPAIGN_STATUS.WAITING_MINING) {
 
-        }
+        // }
         $("#campaignContractModal").modal({ backdrop: "static" });
     }
 

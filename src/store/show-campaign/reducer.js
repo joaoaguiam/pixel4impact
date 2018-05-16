@@ -33,6 +33,22 @@ export default function reduce(state = initialState, action = {}) {
                 campaign: action.campaign,
                 isFetched: true,
             });
+        case types.TX_HASH_UPDATED:
+            return state.merge({
+                txHash: action.txHash
+            });
+        // case types.MOVE_NEXT_STEP:
+        //     return state.merge({
+        //         currentStep: action.nextStep
+        //     });
+        // case types.MOVE_PREV_STEP:
+        //     return state.merge({
+        //         currentStep: action.prevStep
+        //     });
+        case types.STATUS_UPDATED:
+            return state.merge({
+                status: action.newStatus
+            });
         default:
             return state;
     }

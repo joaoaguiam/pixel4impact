@@ -15,14 +15,15 @@
     }
 
     .btns-container {
-        position: relative;
+        // position: relative;
+        // padding:2em;
         input, span {
             margin:1em;
         }
-        .donate {
-            position: absolute;
-            right: 0;
-        }
+        // .donate {
+        //     position: absolute;
+        //     right: 0;
+        // }
     }
     .select-mode {
         cursor: pointer;
@@ -43,8 +44,27 @@
         }
         
     }
+    // .btns-container {
+    //     padding: 2em;
+    // }
 
-    
+    #donationModal {
+        .loading {
+            text-align: center;
+            width: 100%;
+            display: block;
+        }
+        .success {
+            color: #4FAE54;
+        }
+
+        .button-container {
+            margin: 1.5em 0;
+        }
+        .info-text {
+            margin-top: 1em;
+        }
+    }
 }
 
 /*

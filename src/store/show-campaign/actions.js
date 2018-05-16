@@ -15,6 +15,8 @@ export function fetchCampaing(address) {
             console.log(campaign);
             
             dispatch({ type: types.CAMPAIGN_FETCHED, campaign});
+            dispatch({ type: types.STATUS_UPDATED, newStatus: showCampaingSelectors.DONATION_STATUS.DRAFT});
+            dispatch({ type: types.TX_HASH_UPDATED, txHash: undefined});
         } catch (error) {
             console.error(error);
         }

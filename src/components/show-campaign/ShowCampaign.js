@@ -14,11 +14,27 @@ import * as showCampaignSelectors from "../../store/show-campaign/reducer";
 import * as showCampaignActions from "../../store/show-campaign/actions";
 
 import { TwitterPicker } from "react-color";
+import { browserHistory } from 'react-router'
 
 
 const maxWidth = 670;
 const defaultPixelWidth = 10;
 const emptyColor = "#f5f5f5";
+
+
+const initialState = {
+    mouseColor: "#f4511e",
+    selectMode: false,
+    selectedPixel: {
+        x: undefined,
+        y: undefined
+    },
+    hoverPixel: {
+        x: undefined,
+        y: undefined
+    },
+    donation: undefined
+};
 
 class ShowCampaign extends Component {
     constructor(props) {
@@ -27,19 +43,7 @@ class ShowCampaign extends Component {
 
         // this.lastPixelX = -1;
         // this.lastPixelY = -1;
-        this.state = {
-            mouseColor: "#f4511e",
-            selectMode: false,
-            selectedPixel: {
-                x: undefined,
-                y: undefined
-            },
-            hoverPixel: {
-                x: undefined,
-                y: undefined
-            },
-            donation: undefined
-        };
+        this.state = initialState;
     }
 
     // generatePixels(xPixels, yPixels) {
@@ -147,6 +151,9 @@ class ShowCampaign extends Component {
 
     componentDidUpdate() {
         this.renderCanvas();
+        if(this.props.status === showCampaignSelectors.DONATION_STATUS.WAITING_MINING || this.props.status === showCampaignSelectors.DONATION_STATUS.MINED) {
+            $("#donationModal").modal({ backdrop: "static" });
+        }
     }
     componentDidMount = async () => {
         let pixel4ImpactAddress = this.props.routeParams.address;
@@ -154,8 +161,10 @@ class ShowCampaign extends Component {
     };
 
     handleCanvasClick(e) {
-        if(this.state.selectMode) {
-            this.setState({ selectedPixel: this.state.hoverPixel });
+        if (this.state.selectMode) {
+            if (this.props.campaign.pixels[this.state.hoverPixel.x][this.state.hoverPixel.y] === undefined) {
+                this.setState({ selectedPixel: this.state.hoverPixel });
+            }
         }
     }
     handleColorChange(color) {
@@ -175,12 +184,62 @@ class ShowCampaign extends Component {
         this.props.dispatch(showCampaignActions.confirmDonationOnBlockchain(pixel4ImpactAddress, this.state.selectedPixel, this.state.mouseColor, this.state.donation));
     }
 
-    componentWillReceiveProps(nextProps)  {
+    componentWillReceiveProps(nextProps) {
         if (nextProps.isFetched && this.state.donation === undefined) {
-            this.setState({donation: nextProps.campaign.minDonation});
+            this.setState({ donation: nextProps.campaign.minDonation });
         }
     }
+    openCampaignPage() {
+        $("#donationModal").modal('hide');
+        location.reload();
+        // // browserHistory.push('/show-campaign/'+this.props.contractDetails.address);
+        // let pixel4ImpactAddress = this.props.routeParams.address;
+        // this.setState(initialState);
+        // this.props.dispatch(showCampaignActions.fetchCampaing(pixel4ImpactAddress));
+    }
 
+    renderDonationConfirmationModal() {
+        // debugger;
+        if (this.props.status === showCampaignSelectors.DONATION_STATUS.WAITING_MINING) {
+            return (
+                <div id="donationModal" className="modal fade" role="dialog">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-body">
+                                {/* <button type="button" className="close" data-dismiss="modal">&times;</button> */}
+                                <div className="info-text text-center"><span>Your donation is being confirmed by the blockchain...</span></div>
+                                <div className="text-center button-container">
+                                    <div className="loading"><i className="fas fa-spinner fa-spin fa-2x"></i></div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            )
+        };
+        if (this.props.status === showCampaignSelectors.DONATION_STATUS.MINED) {
+            return (
+                <div id="donationModal" className="modal fade" role="dialog">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-body">
+                                {/* <button type="button" className="close" data-dismiss="modal">&times;</button> */}
+
+                                <div className="info-text text-center"><span><i className="fas fa-check-circle success"></i> Thank you for getting a Pixel4Impact for this campaing!</span></div>
+                                <div className="text-center button-container">
+                                    <input className="btn btn-secondary" type="button" value="Open Campaign Page" onClick={this.openCampaignPage} />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )
+        };
+
+        return null;
+    }
     render() {
         console.log(this.props);
 
@@ -257,13 +316,14 @@ class ShowCampaign extends Component {
                                     </div>
                                 }
                                 {!this.state.selectMode &&
-                                    < div className="row btns-container">
-                                        <input className="btn btn-outline-primary contributions" type="button" value="Donators" />
+                                    <div className="text-center btns-container">
+                                        {/* <input className="btn btn-outline-primary contributions" type="button" value="Donators" /> */}
                                         <input className="btn btn-primary donate" type="button" value="Donate a Pixel4Impact" onClick={this.handleDonatePixelClick} />
                                     </div>
                                 }
                             </div>
                         </div>
+                        {this.renderDonationConfirmationModal()}
                     </div>
                 </div>
             );
@@ -282,7 +342,8 @@ class ShowCampaign extends Component {
 function mapStateToProps(state) {
     return {
         isFetched: showCampaignSelectors.isFetched(state),
-        campaign: showCampaignSelectors.getCampaign(state)
+        campaign: showCampaignSelectors.getCampaign(state),
+        status: showCampaignSelectors.getStatus(state),
     };
 }
 

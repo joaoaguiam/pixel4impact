@@ -53,28 +53,12 @@ class Home extends Component {
         const tooltip = <Tooltip id="modal-tooltip">wow.</Tooltip>;
         return (
             <div>
-                <p>Click to get the full Modal experience!</p>
-
-                <Button bsStyle="primary" bsSize="large" onClick={this.handleShow}>
-                    Launch demo modal
-              </Button>
-                {/* <button type="button" className="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button> */}
-
-                <div id="myModal" className="modal fade" role="dialog">
-                    <div className="modal-dialog">
-
-                        <div className="modal-content">
-
-                            <div className="modal-body">
-                                <button type="button" className="close" data-dismiss="modal">&times;</button>
-                                <p>Some text in the modal.</p>
-                            </div>
-                            
-                        </div>
-
-                    </div>
+                <div className="text-center">
+                    <h1>Pixel4Impact</h1>
                 </div>
-
+                <div className="card card-register mx-auto secti">
+                    <span>bla bla bla</span>
+                </div>
             </div>
         );
     }

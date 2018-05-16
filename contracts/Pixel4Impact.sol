@@ -10,6 +10,7 @@ contract Pixel4Impact is ERC721Token, Ownable {
     uint public minDonation;
     string public metadataUri;
 
+
     function Pixel4Impact(uint _xPixels, uint _yPixels, uint _minDonation, string _metadataUri) ERC721Token("Pixel4Impact", "P4I") public { 
         xPixels = _xPixels;
         yPixels = _yPixels;
@@ -21,6 +22,7 @@ contract Pixel4Impact is ERC721Token, Ownable {
         uint x;
         uint y;
         string color;
+        uint donation;
     }
     
     Pixel[] pixels;
@@ -29,6 +31,8 @@ contract Pixel4Impact is ERC721Token, Ownable {
 
     
     event PixelCreated(uint x, uint y, string color, uint donation, address contributor);
+    event DebugStr(string value);
+    event DebugInt(uint value);
 
     modifier tokenAvailable(uint x, uint y) {
         require(!pixelsTaken[x][y]);
@@ -44,14 +48,19 @@ contract Pixel4Impact is ERC721Token, Ownable {
 
 
     function donatePixel(uint _x, uint _y, string _color) public payable tokenAvailable(_x, _y) isMinDonation() {
+        emit DebugInt(_x);
+        emit DebugInt(_y);
+        emit DebugStr(_color);
+        emit DebugInt(msg.value);
         uint256 newTokenId = _getNextTokenId();
         _mint(msg.sender, newTokenId);
         Pixel memory pixel = Pixel({
             x: _x,
             y: _y,
-            color: _color
+            color: _color,
+            donation: msg.value
         });
-        pixels[newTokenId] = pixel;
+        pixels.push(pixel);
         pixelsTaken[_x][_y] = true;
         donators.push(msg.sender);
         owner.transfer(msg.value);
@@ -68,9 +77,9 @@ contract Pixel4Impact is ERC721Token, Ownable {
         return pixels.length;
     }
 
-    function getPixelTakenByIndex(uint _index) public view returns(uint x, uint y, string color) {
+    function getPixelTakenByIndex(uint _index) public view returns(uint x, uint y, string color, uint donation) {
         Pixel storage pixel = pixels[_index];
-        return (pixel.x, pixel.y, pixel.color);
+        return (pixel.x, pixel.y, pixel.color, pixel.donation);
     }
 
     function getNumDonators() public view returns(uint) {

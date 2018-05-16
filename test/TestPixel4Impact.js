@@ -69,6 +69,8 @@ contract("Pixel4Impact", async function (accounts) {
 
             const contract = await Pixel4Impact.new(xPixels, yPixels, minDonation, metadataUri, { from: owner });
 
+            // let res = await contract.donatePixel(0, 0, "red",{from: user2, value: minDonation});
+            // console.log(res);
             for (let x = 0; x < xPixels; x++) {
                 for (let y = 0; y < yPixels; y++) {
                     let ownerBalance = parseInt(web3.eth.getBalance(owner).toNumber());
