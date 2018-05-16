@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import $ from 'jquery';
 
 import autoBind from 'react-autobind';
-import { Modal, Popover, Button, Tooltip, OverlayTrigger } from 'react-bootstrap'
+// import { Modal, Popover, Button, Tooltip, OverlayTrigger } from 'react-bootstrap'
+import { browserHistory } from 'react-router'
 
 import './Home.scss';
 // import IpfsUpload from '../generic/ipfs/ipfs-upload/IpfsUpload';
@@ -34,6 +35,11 @@ class Home extends Component {
     //     this.props.dispatch(createCampaingActions.createCampaignOnBlockchain());
     // }
 
+
+    handleCreateCampaignClick(e) {
+        browserHistory.push('/create-campaign/');
+    }
+
     handleClose() {
         this.setState({ show: false });
     }
@@ -45,21 +51,25 @@ class Home extends Component {
     }
     render() {
 
-        const popover = (
-            <Popover id="modal-popover" title="popover">
-                very popover. such engagement
-            </Popover>
-        );
-        const tooltip = <Tooltip id="modal-tooltip">wow.</Tooltip>;
         return (
-            <div>
-                <div className="text-center">
-                    <h1>Pixel4Impact</h1>
-                </div>
-                <div className="card card-register mx-auto secti">
-                    <span>bla bla bla</span>
+
+            <div className="container home-container text-center">
+                <div className="mx-auto col-sm-8">
+                    {/* card card-register */}
+                    {/* <div className="card-header">Create Pixel 4 Impact campaign</div> */}
+                    <div className="card-body">
+                        <h1><i className="fas fa-hand-holding-heart logo-icon"></i>Pixel<span className="logo-icon">4</span>Impact</h1>
+                        <h2>
+                            <span>Create a fund-raising campaign on the blockchain and receive a unique picture created collaboratively by everyone that believes on your project!</span>
+                        </h2>
+
+                        <input className="btn btn-primary create-campaign" type="button" value="Create Campaign" onClick={this.handleCreateCampaignClick} />
+
+                    </div>
+
                 </div>
             </div>
+
         );
     }
     // return (

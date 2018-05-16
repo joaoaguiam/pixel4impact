@@ -97,8 +97,8 @@ class CreateCampaign extends Component {
                     <div className="card card-register mx-auto col-sm-8">
                         {/* <div className="card-header">Create Pixel 4 Impact campaign</div> */}
                         <div className="card-body">
-                            {/* <h1>Create Pixel 4 Impact Campaign</h1>
-                        <hr /> */}
+                            <h1>Create Campaign</h1>
+                        
                             <form>
                                 <div className="form-group">
                                     <label htmlFor="ngoName">Organization Name</label>

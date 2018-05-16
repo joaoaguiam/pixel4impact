@@ -14,7 +14,7 @@ import * as showCampaignSelectors from "../../store/show-campaign/reducer";
 import * as showCampaignActions from "../../store/show-campaign/actions";
 
 import { TwitterPicker } from "react-color";
-import { browserHistory } from 'react-router'
+// import { browserHistory } from 'react-router'
 
 
 const maxWidth = 670;
@@ -229,7 +229,7 @@ class ShowCampaign extends Component {
 
                                 <div className="info-text text-center"><span><i className="fas fa-check-circle success"></i> Thank you for getting a Pixel4Impact for this campaing!</span></div>
                                 <div className="text-center button-container">
-                                    <input className="btn btn-secondary" type="button" value="Open Campaign Page" onClick={this.openCampaignPage} />
+                                    <input className="btn btn-secondary" type="button" value="Reload Campaign Page" onClick={this.openCampaignPage} />
                                 </div>
                             </div>
                         </div>

@@ -38,7 +38,7 @@ class Header extends Component {
         // let isCreateCampaign = url.includes('create-campaign') ? 'active' : '';
         return (
             <nav className="navbar navbar-expand-md navbar-dark">
-                <a className="navbar-brand" href="#"><i className="fas fa-hand-holding-heart logo-icon"></i>Pixel<span className="logo-icon">4</span>Impact</a>
+                <a className="navbar-brand" href="/"><i className="fas fa-hand-holding-heart logo-icon"></i>Pixel<span className="logo-icon">4</span>Impact</a>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsingNavbarSm">
                     <span className="navbar-toggler-icon"></span>
                 </button>

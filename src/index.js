@@ -9,7 +9,7 @@ import { createStore, applyMiddleware, combineReducers } from 'redux';
 
 import { composeWithDevTools } from 'redux-devtools-extension';
 
-// import ReactGA from 'react-ga';
+import ReactGA from 'react-ga';
 
 // Layouts
 import App from './App'
@@ -54,13 +54,13 @@ const store = initStore();
 const history = syncHistoryWithStore(browserHistory, store)
 
 // google analytics
-// ReactGA.initialize('UA-116298591-2');
-// ReactGA.pageview(window.location.pathname + window.location.search);
+ReactGA.initialize('UA-119312839-1');
+ReactGA.pageview(window.location.pathname + window.location.search);
 ReactDOM.render((
     <Provider store={store}>
         <Router history={history}>
             <Route path="/" component={App}>
-                <IndexRoute component={CreateCampaign} />
+                <IndexRoute component={Home} />
                 <Route path="show-campaign/:address" component={ShowCampaign} />
                 <Route path="create-campaign" component={CreateCampaign} />
                 <Route path="home" component={Home} />
