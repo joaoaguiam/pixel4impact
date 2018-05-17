@@ -63,7 +63,7 @@ contract Pixel4Impact is ERC721Token, Ownable {
         pixels.push(pixel);
         pixelsTaken[_x][_y] = true;
         donators.push(msg.sender);
-        owner.transfer(msg.value);
+        // owner.transfer(msg.value);
     }
 
     function _getNextTokenId() private view returns (uint256) {
@@ -92,4 +92,12 @@ contract Pixel4Impact is ERC721Token, Ownable {
     function () external payable {
         //TODO;
     }
+
+    // function withdraw(uint amount) onlyOwner returns(bool) {
+    //     require(amount < this.balance);
+    //     owner.transfer(amount);
+    //     return true;
+
+    // }
+
 }

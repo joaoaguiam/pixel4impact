@@ -35,6 +35,7 @@ class Header extends Component {
         console.log(url);
         // debugger;
         let isCreateCampaign = url.includes('create-campaign') || url === '/' ? 'active' : '';
+        let isDemoCampaign = url.includes('0x776130470ca6ebbde5b26cdfeb7e0ef9578cdde3') || url === '/' ? 'active' : '';
         // let isCreateCampaign = url.includes('create-campaign') ? 'active' : '';
         return (
             <nav className="navbar navbar-expand-md navbar-dark">
@@ -47,8 +48,8 @@ class Header extends Component {
                         <li className={"nav-item "+isCreateCampaign}>
                             <a className="nav-link" href="/create-campaign">Create Campaign</a>
                         </li>
-                        <li className="nav-item">
-                            <a className="nav-link" href="#">List all Campaigns</a>
+                        <li className={"nav-item "+isDemoCampaign}>
+                            <a className="nav-link" href="/show-campaign/0x776130470ca6ebbde5b26cdfeb7e0ef9578cdde3">Demo Campaign</a>
                         </li>
                     </ul>
                 </div>

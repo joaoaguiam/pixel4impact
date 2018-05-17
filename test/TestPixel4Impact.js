@@ -68,17 +68,17 @@ contract("Pixel4Impact", async function (accounts) {
             let metadataUri = "test.test";
 
             const contract = await Pixel4Impact.new(xPixels, yPixels, minDonation, metadataUri, { from: owner });
-
+            let address = contract.address;
             // let res = await contract.donatePixel(0, 0, "red",{from: user2, value: minDonation});
             // console.log(res);
             for (let x = 0; x < xPixels; x++) {
                 for (let y = 0; y < yPixels; y++) {
-                    let ownerBalance = parseInt(web3.eth.getBalance(owner).toNumber());
-                    let expectedBalance = ownerBalance+minDonation;
+                    let initialBalance = parseInt(web3.eth.getBalance(address).toNumber());
+                    let expectedBalance = initialBalance+minDonation;
                     let res = await contract.donatePixel(x, y, "red",{from: user2, value: minDonation});
-                    let newOwnerBalance = web3.eth.getBalance(owner).toNumber();
+                    let newBalance = web3.eth.getBalance(address).toNumber();
                     
-                    assert.equal(expectedBalance, newOwnerBalance);
+                    assert.equal(expectedBalance, newBalance);
                 }
             }
         });
