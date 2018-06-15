@@ -69,4 +69,5 @@ ReactDOM.render((
     </Provider>
 ),
     document.getElementById('root')
+    // document.getElementsByTagName("BODY")[0]
 )

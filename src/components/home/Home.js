@@ -1,26 +1,100 @@
-import React, { Component, ReactDOM } from 'react';
+
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import $ from 'jquery';
 
 import autoBind from 'react-autobind';
-// import { Modal, Popover, Button, Tooltip, OverlayTrigger } from 'react-bootstrap'
-import { browserHistory } from 'react-router'
 
-import './Home.scss';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import Logo from '../layout/Logo';
+
+const styles = theme => ({
+    root: {
+        'text-align': 'center',
+        'margin-top': '2.3em',
+    }
+});
+
+
+class Home extends Component {
+
+    constructor(props) {
+        super(props);
+        autoBind(this);
+    }
+
+    render() {
+        const { classes } = this.props;
+        
+        return (
+            <div className={classes.root}>
+                <Logo big={true}/>
+            </div>
+
+        )
+    }
+}
+
+
+function mapStateToProps(state) {
+    return {
+    };
+}
+
+
+Home.propTypes = {
+    classes: PropTypes.object.isRequired,
+};
+export default connect(mapStateToProps)(withStyles(styles)(Home));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import React, { Component, ReactDOM } from 'react';
+// import { connect } from 'react-redux';
+// import $ from 'jquery';
+
+// import autoBind from 'react-autobind';
+// // import { Modal, Popover, Button, Tooltip, OverlayTrigger } from 'react-bootstrap'
+// import { browserHistory } from 'react-router'
+
+// import './Home.scss';
+// import Logo from '../layout/Logo';
 // import IpfsUpload from '../generic/ipfs/ipfs-upload/IpfsUpload';
 
 // import * as createCampaingActions from '../../store/create-campaign/actions';
 // import * as createCampaingSelectors from '../../store/create-campaign/reducer';
 // import IpfsUpload from '../generic/ipfs/ipfs-upload/IpfsUpload';
 
-class Home extends Component {
-    constructor(props) {
-        super(props);
-        autoBind(this);
-        this.state = {
-            show: true,
-        }
-    }
+// class Home extends Component {
+//     constructor(props) {
+//         super(props);
+//         autoBind(this);
+//         this.state = {
+//             show: true,
+//         }
+//     }
 
     // handleFieldChange(e, fieldName) {
     //     let value = e.target.value;
@@ -36,71 +110,74 @@ class Home extends Component {
     // }
 
 
-    handleCreateCampaignClick(e) {
-        browserHistory.push('/create-campaign/');
-    }
+//     handleCreateCampaignClick(e) {
+//         browserHistory.push('/create-campaign/');
+//     }
 
-    handleClose() {
-        this.setState({ show: false });
-    }
+//     handleClose() {
+//         this.setState({ show: false });
+//     }
 
-    handleShow() {
-        $("#myModal").modal({ backdrop: "static" })
+//     handleShow() {
+//         $("#myModal").modal({ backdrop: "static" })
 
-        this.setState({ show: true });
-    }
-    render() {
+//         this.setState({ show: true });
+//     }
+//     render() {
 
-        return (
+//         return (
 
-            <div className="container home-container text-center">
-                <div className="mx-auto col-sm-8">
-                    {/* card card-register */}
-                    {/* <div className="card-header">Create Pixel 4 Impact campaign</div> */}
-                    <div className="card-body">
-                        <h1><i className="fas fa-hand-holding-heart logo-icon"></i>Pixel<span className="logo-icon">4</span>Impact</h1>
-                        <h2>
-                            <span>Create a fund-raising campaign on the blockchain and receive a unique picture created collaboratively by everyone that believes on your project!</span>
-                        </h2>
+//             <div className="container home-container text-center">
+//                 <div className="mx-auto col-sm-8">
+//                     {/* card card-register */}
+//                     {/* <div className="card-header">Create Pixel 4 Impact campaign</div> */}
+//                     <div className="card-body">
 
-                        <input className="btn btn-primary create-campaign" type="button" value="Create Campaign" onClick={this.handleCreateCampaignClick} />
+//                         <Logo big={true}/>
 
-                    </div>
+//                         {/* <h1><i className="fas fa-hand-holding-heart logo-icon"></i>Pixel<span className="logo-icon">4</span>Impact</h1> */}
+//                         <h2>
+//                             <span>Create a fund-raising campaign on the blockchain and receive a unique picture created collaboratively by everyone that believes on your project!</span>
+//                         </h2>
 
-                </div>
-            </div>
+//                         <input className="btn btn-primary create-campaign" type="button" value="Create Campaign" onClick={this.handleCreateCampaignClick} />
 
-        );
-    }
-    // return (
-    // <div className="home-container">
+//                     </div>
 
-    //     <div className="jumbotron text-center">
-    //         <h1>Pixel 4 Impact</h1>
-    //         <p>Get a pixel for a canvas impact!</p>
-    //     </div>
-    //     <div className="container-fluid">
-    //         <h2>About Company Page</h2>
-    //         <h4>Lorem ipsum..</h4>
-    //         <p>Lorem ipsum..</p>
-    //         <button className="btn btn-default btn-lg">Get in Touch</button>
-    //     </div>
+//                 </div>
+//             </div>
 
-    //     <div className="container-fluid bg-grey">
-    //         <h2>Our Values</h2>
-    //         <h4><strong>MISSION:</strong> Our mission lorem ipsum..</h4>
-    //         <p><strong>VISION:</strong> Our vision Lorem ipsum..</p>
-    //     </div>
-    // </div>
-    //     )
-    // }
-}
+//         );
+//     }
+//     // return (
+//     // <div className="home-container">
+
+//     //     <div className="jumbotron text-center">
+//     //         <h1>Pixel 4 Impact</h1>
+//     //         <p>Get a pixel for a canvas impact!</p>
+//     //     </div>
+//     //     <div className="container-fluid">
+//     //         <h2>About Company Page</h2>
+//     //         <h4>Lorem ipsum..</h4>
+//     //         <p>Lorem ipsum..</p>
+//     //         <button className="btn btn-default btn-lg">Get in Touch</button>
+//     //     </div>
+
+//     //     <div className="container-fluid bg-grey">
+//     //         <h2>Our Values</h2>
+//     //         <h4><strong>MISSION:</strong> Our mission lorem ipsum..</h4>
+//     //         <p><strong>VISION:</strong> Our vision Lorem ipsum..</p>
+//     //     </div>
+//     // </div>
+//     //     )
+//     // }
+// }
 
 
-function mapStateToProps(state) {
-    return {
-        // newCampaign: createCampaingSelectors.getNewCampaign(state)
-    };
-}
+// function mapStateToProps(state) {
+//     return {
+//         // newCampaign: createCampaingSelectors.getNewCampaign(state)
+//     };
+// }
 
-export default connect(mapStateToProps)(Home);
+// export default connect(mapStateToProps)(Home);

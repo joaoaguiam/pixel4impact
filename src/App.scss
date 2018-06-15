@@ -7,9 +7,24 @@
     
 // }
 
-body{
-    font-family: 'Nunito', sans-serif;
-    background-color:#f5f5f5;
+html, body, {
+    height: 100%;
+    box-sizing: border-box;
+    margin: 0;
+    width: 100%;
+    position: absolute;
+}
+
+#root {
+    min-height:100%;
+    position: absolute;
+    width: 100%,
+ 
+}
+.App {
+    // margin: 0 auto;
+    padding-bottom:60px;   /* Height of the footer */
+
 }
 
 .btn-primary { 
@@ -50,4 +65,15 @@ body{
     height:  367px;
     right: 0;
     opacity: 0.1;
+}
+
+
+//-------
+a {
+    color: rgba(0, 0, 0, 0.54);
+    text-decoration: none;
+}
+a:hover {
+    color: #ffCC80;
+    text-decoration: none;
 }

@@ -1,6 +1,6 @@
 var HDWalletProvider = require("truffle-hdwallet-provider");
 
- var mnemonic = require('./truffle-keys');
+var mnemonic = require('./truffle-keys');
 console.log(mnemonic);
 
 module.exports = {
@@ -15,19 +15,27 @@ module.exports = {
             network_id: "*" // Match any network id
         },
         ropsten: {
-            provider: function() {
+            provider: function () {
                 return new HDWalletProvider(mnemonic, "https://ropsten.infura.io/EZyTApAawdQGy2Xnb6GS")
             },
             gas: 4698712,
             network_id: 3
         },
         rinkeby: {
-            provider: function() {
+            provider: function () {
                 return new HDWalletProvider(mnemonic, "https://rinkeby.infura.io/EZyTApAawdQGy2Xnb6GS")
             },
             gas: 4698712,
             network_id: 4
         },
+        rsk: {
+            host: "localhost",
+            port: 4444,
+            network_id: "*", // Match any network id
+            from: "0x7ea7bc24fc66c31ef954a9bf9b2ada5e9db6ec46",
+
+
+        }
     },
     solc: {
         optimizer: {
