@@ -1,5 +1,7 @@
 # pixel4impact
 
+A platform to make donations for NGOs more appealing by allowing all donors to create a collaborative unique piece of art.
+
 ## What is this project about?
 
 Pixe4Impact is a new way to make donations to NGOs. Instead of just giving some cryptocurrencies, donors will need to select a pixel and a color from a pre-defined canvas and this information is stored forever in the blockchain attached to the donation.
